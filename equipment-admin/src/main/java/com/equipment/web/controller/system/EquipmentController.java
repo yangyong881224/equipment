@@ -2,8 +2,14 @@ package com.equipment.web.controller.system;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.equipment.common.utils.ShiroUtils;
+import com.equipment.system.domain.EquipmentType;
+import com.equipment.system.service.IEquipmentTypeService;
+import com.equipment.web.controller.converter.EquipmentVOConverter;
+import com.equipment.web.controller.vo.EquipmentVO;
+import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,10 +38,17 @@ import com.equipment.common.core.page.TableDataInfo;
 @RequestMapping("/system/equipment")
 public class EquipmentController extends BaseController
 {
+
     private String prefix = "system/equipment";
 
     @Autowired
     private IEquipmentService equipmentService;
+
+    @Autowired
+    private IEquipmentTypeService equipmentTypeService;
+
+    @Autowired
+    private EquipmentVOConverter equipmentVOConverter;
 
     @RequiresPermissions("system:equipment:view")
     @GetMapping()
@@ -54,7 +67,8 @@ public class EquipmentController extends BaseController
     {
         startPage();
         List<Equipment> list = equipmentService.selectEquipmentList(equipment);
-        return getDataTable(list);
+        List<EquipmentVO> equipmentListVOList = insertTypeName(list);
+        return getDataTable(equipmentListVOList);
     }
 
     /**
@@ -67,8 +81,35 @@ public class EquipmentController extends BaseController
     public AjaxResult export(Equipment equipment)
     {
         List<Equipment> list = equipmentService.selectEquipmentList(equipment);
-        ExcelUtil<Equipment> util = new ExcelUtil<Equipment>(Equipment.class);
-        return util.exportExcel(list, "equipment");
+        ExcelUtil<EquipmentVO> util = new ExcelUtil<EquipmentVO>(EquipmentVO.class);
+        List<EquipmentVO> equipmentListVOList = insertTypeName(list);
+        return util.exportExcel(equipmentListVOList, "equipment");
+    }
+
+    /**
+     * 数据拼装
+     * @param equipmentList
+     * @return
+     */
+    public List<EquipmentVO> insertTypeName(List<Equipment> equipmentList){
+        List<EquipmentVO> equipmentVOList = Lists.newArrayList();
+        if(equipmentList == null || equipmentList.size() == 0)
+            return equipmentVOList;
+        List<Long> typeIdList = equipmentList.stream().map(Equipment::getTypeId).collect(Collectors.toList());
+        //查询typeName
+        List<EquipmentType> equipmentTypeList = equipmentTypeService.selectEquipmentTypeByIds(typeIdList);
+        //对比拼接
+        equipmentList.stream().forEach(equipment -> {
+            EquipmentType equipmentType = equipmentTypeList.stream().filter(type -> type.getId().equals(equipment.getTypeId())).findFirst().orElse(null);
+            EquipmentVO equipmentVO = equipmentVOConverter.equipment2VO(equipment);
+            if(equipmentType != null){
+                equipmentVO.setTypeName(equipmentType.getTypeName());
+            }
+            //数据并集
+            equipmentVOList.add(equipmentVO);
+
+        });
+        return equipmentVOList;
     }
 
     /**

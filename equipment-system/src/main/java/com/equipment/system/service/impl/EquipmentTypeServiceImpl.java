@@ -91,4 +91,9 @@ public class EquipmentTypeServiceImpl implements IEquipmentTypeService
     {
         return equipmentTypeMapper.deleteEquipmentTypeById(id);
     }
+
+    @Override
+    public List<EquipmentType> selectEquipmentTypeByIds(List<Long> typeIdList) {
+        return equipmentTypeMapper.selectEquipmentTypeByIds(typeIdList);
+    }
 }

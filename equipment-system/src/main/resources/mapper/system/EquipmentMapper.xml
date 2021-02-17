@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="Equipment" id="EquipmentResult">
         <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
         <result property="typeId"    column="type_id"    />
         <result property="modelNum"    column="model_num"    />
         <result property="quantity"    column="quantity"    />
@@ -17,16 +18,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectEquipmentVo">
-        select id, type_id, model_num, quantity, flag, created_at, created_by, updated_at, updated_by from equipment
+        select id,name, type_id, model_num, quantity, flag, created_at, created_by, updated_at, updated_by from equipment
     </sql>
 
     <select id="selectEquipmentList" parameterType="Equipment" resultMap="EquipmentResult">
         <include refid="selectEquipmentVo"/>
         <where>  
             <if test="typeId != null "> and type_id = #{typeId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="modelNum != null  and modelNum != ''"> and model_num = #{modelNum}</if>
             <if test="quantity != null "> and quantity = #{quantity}</if>
-            <if test="flag != null "> and flag = #{flag}</if>
+            <if test="flag != null and flag != -1"> and flag = #{flag}</if>
             <if test="createdAt != null "> and created_at = #{createdAt}</if>
             <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
             <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
@@ -43,6 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into equipment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="typeId != null">type_id,</if>
+            <if test="name != null">name,</if>
             <if test="modelNum != null">model_num,</if>
             <if test="quantity != null">quantity,</if>
             <if test="flag != null">flag,</if>
@@ -53,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="typeId != null">#{typeId},</if>
+            <if test="name != null">#{name},</if>
             <if test="modelNum != null">#{modelNum},</if>
             <if test="quantity != null">#{quantity},</if>
             <if test="flag != null">#{flag},</if>
@@ -67,6 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update equipment
         <trim prefix="SET" suffixOverrides=",">
             <if test="typeId != null">type_id = #{typeId},</if>
+            <if test="name != null">name = #{name},</if>
             <if test="modelNum != null">model_num = #{modelNum},</if>
             <if test="quantity != null">quantity = #{quantity},</if>
             <if test="flag != null">flag = #{flag},</if>

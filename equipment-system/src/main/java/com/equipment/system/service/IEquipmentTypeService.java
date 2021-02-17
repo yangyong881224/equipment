@@ -58,4 +58,6 @@ public interface IEquipmentTypeService
      * @return 结果
      */
     public int deleteEquipmentTypeById(Long id);
+
+    List<EquipmentType> selectEquipmentTypeByIds(List<Long> typeIdList);
 }

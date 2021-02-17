@@ -15,8 +15,16 @@
                                 <input type="text" name="modelNum"/>
                             </li>
                             <li>
-                                <label>设备状态：0正常；1报销：</label>
-                                <input type="text" name="flag"/>
+                                <label>名称</label>
+                                <input type="text" name="name"/>
+                            </li>
+                            <li>
+                                <label>设备状态</label>
+                                <select id="flag" name="flag">
+                                    <option value="-1">所有</option>
+                                    <option value="0">正常</option>
+                                    <option value="1">报销</option>
+                                </select>
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -68,8 +76,13 @@
                     title: '设备id',
                     visible: false
                 },
+
                 {
-                    field: 'typeId',
+                    field: 'name',
+                    title: '设备名称'
+                },
+                {
+                    field: 'typeName',
                     title: '设备类型'
                 },
                 {

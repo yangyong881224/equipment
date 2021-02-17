@@ -58,4 +58,6 @@ public interface EquipmentTypeMapper
      * @return 结果
      */
     public int deleteEquipmentTypeByIds(String[] ids);
+
+    List<EquipmentType> selectEquipmentTypeByIds(List<Long> typeIdList);
 }
