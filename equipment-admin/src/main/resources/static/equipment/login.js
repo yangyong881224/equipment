@@ -32,6 +32,8 @@ function login() {
         success: function(r) {
             if (r.code == 0) {
                 location.href = ctx + 'index';
+            }else if(r.code == 1){
+                location.href = ctx + 'main/index';
             } else {
             	$.modal.closeLoading();
             	$('.imgcode').click();

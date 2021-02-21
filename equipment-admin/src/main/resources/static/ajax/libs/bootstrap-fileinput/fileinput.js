@@ -50,7 +50,7 @@
         FRAMES: '.kv-preview-thumb',
         SORT_CSS: 'file-sortable',
         INIT_FLAG: 'init-',
-        OBJECT_PARAMS: '<param name="controller" value="true" />\n' +
+        OBJECT_PARAMS: '<param name="door" value="true" />\n' +
             '<param name="allowFullScreen" value="true" />\n' +
             '<param name="allowScriptAccess" value="always" />\n' +
             '<param name="autoPlay" value="false" />\n' +

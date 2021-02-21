@@ -2,6 +2,9 @@ package com.equipment.web.controller.system;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.equipment.common.core.domain.entity.SysRole;
+import com.equipment.common.utils.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -44,15 +47,19 @@ public class SysLoginController extends BaseController
         try
         {
             subject.login(token);
+            for(SysRole role : ShiroUtils.getSysUser().getRoles()){
+                if(role.getRoleId() == 2){
+                    return new AjaxResult(AjaxResult.Type.DOOR_SUCCESS, "操作成功", null);
+                }
+            }
             return success();
         }
         catch (AuthenticationException e)
         {
             String msg = "用户或密码错误";
             if (StringUtils.isNotEmpty(e.getMessage()))
-            {
-                msg = e.getMessage();
-            }
+                ;
+
             return error(msg);
         }
     }

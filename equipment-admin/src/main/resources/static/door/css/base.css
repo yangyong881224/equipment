@@ -1,0 +1,171 @@
+﻿@charset "utf-8";
+/* 统一标签默认样式 */
+body,
+form {
+  margin: 0;
+}
+ul {
+  list-style-type: none;
+}
+table {
+  border-collapse: collapse;
+}
+input,
+textarea {
+  outline: none;
+}
+p,
+input,
+td,
+textarea,
+ul,
+dl,
+dt,
+dd {
+  padding: 0;
+  margin: 0;
+}
+i,
+em {
+  font-style: normal;
+}
+u,
+a,
+s {
+  text-decoration: none;
+}
+body,
+button,
+input,
+select,
+textarea {
+  font: 12px/1.5 Arial, Verdana, Helvetica, sans-serif;
+}
+textarea {
+  display: block;
+  overflow: auto;
+  resize: none;
+}
+img {
+  border: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
+  font-size: inherit;
+}
+/* float */
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+/* 清除浮动 */
+.cf {
+  clear: both;
+}
+.clear:after {
+  display: block;
+  clear: both;
+  content: "";
+  visibility: hidden;
+  height: 0;
+}
+/* font */
+.ff_st,
+.ff_st a {
+  font-family: \5B8B\4F53;
+}
+.ff_wryh {
+  font-family: Microsoft Yahei,\5FAE\8F6F\96C5\9ED1;
+}
+.vam {
+  vertical-align: middle;
+}
+.txt_c {
+  text-align: center;
+}
+.txt_l{
+    text-align:left;
+}
+.txt_r {
+  text-align: right;
+}
+.txt_hidden {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.fb {
+  font-weight: bold;
+}
+.ov_h {
+  overflow: hidden;
+}
+.noborder{
+    border:none!important;
+}
+/* input */
+.input_shadow {
+  box-shadow: 0 0 5px rgba(204, 204, 204, 0.6) inset;
+}
+/* width */
+.w970 {
+  margin: 0 auto;
+  width: 970px;
+}
+/* color */
+/*浅绿*/
+.green_1,
+.green_1 a {
+  color: #9dd6c0!important;
+}
+/*深绿*/
+.green_2,
+.green_2 a {
+  color: #01a469!important;
+}
+/*灰色*/
+.gray_1,
+.gray_1 a {
+  color: #999!important;
+}
+.gray_2,
+.gray_2 a {
+  color: #666!important;
+}
+.gray_3,
+.gray_3 a {
+  color: #333!important;
+}
+.gray_4,
+.gray_4 a {
+  color: #d7d7d7!important;
+}
+/*白色*/
+.white {
+  color: #fff;
+}
+/*红色*/
+.red{
+    color:#f77f7f;
+}
+/*间距*/
+/*display:none / block */
+.hide {
+  display: none!important;
+}
+.show {
+  display: block!important;
+}
+/*CSS箭头*/
+.arrow_s {
+  border: 0 dashed transparent;
+  width: 0;
+  height: 0;
+  font-size: 0;
+}
