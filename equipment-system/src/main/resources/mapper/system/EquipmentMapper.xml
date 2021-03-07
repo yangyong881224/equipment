@@ -15,10 +15,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createdBy"    column="created_by"    />
         <result property="updatedAt"    column="updated_at"    />
         <result property="updatedBy"    column="updated_by"    />
+        <result property="path"    column="path"    />
     </resultMap>
 
     <sql id="selectEquipmentVo">
-        select id,name, type_id, model_num, quantity, flag, created_at, created_by, updated_at, updated_by from equipment
+        select id,name, type_id, model_num, quantity, flag, created_at, created_by, updated_at, updated_by,path from equipment
     </sql>
 
     <select id="selectEquipmentList" parameterType="Equipment" resultMap="EquipmentResult">
@@ -45,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into equipment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="typeId != null">type_id,</if>
+            <if test="path != null">path,</if>
             <if test="name != null">name,</if>
             <if test="modelNum != null">model_num,</if>
             <if test="quantity != null">quantity,</if>
@@ -56,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="typeId != null">#{typeId},</if>
+            <if test="path != null">#{path},</if>
             <if test="name != null">#{name},</if>
             <if test="modelNum != null">#{modelNum},</if>
             <if test="quantity != null">#{quantity},</if>
@@ -71,7 +74,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update equipment
         <trim prefix="SET" suffixOverrides=",">
             <if test="typeId != null">type_id = #{typeId},</if>
-            <if test="name != null">name = #{name},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="path != null">path = #{path},</if>
             <if test="modelNum != null">model_num = #{modelNum},</if>
             <if test="quantity != null">quantity = #{quantity},</if>
             <if test="flag != null">flag = #{flag},</if>
@@ -88,7 +92,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteEquipmentByIds" parameterType="String">
-        delete from equipment where id in 
+        update equipment set flag=1 where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

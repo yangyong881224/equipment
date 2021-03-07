@@ -25,6 +25,8 @@ public class Equipment extends BaseEntity
     /** 设备类型id */
     @Excel(name = "设备类型id")
     private Long typeId;
+    //设备图片地址
+    private String path;
 
     /** 设备型号 */
     @Excel(name = "设备型号")
@@ -45,6 +47,14 @@ public class Equipment extends BaseEntity
     /** $column.columnComment */
     @Excel(name = "设备状态：0正常；1报销")
     private String createdBy;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     /** $column.columnComment */
     @Excel(name = "设备状态：0正常；1报销", width = 30, dateFormat = "yyyy-MM-dd")

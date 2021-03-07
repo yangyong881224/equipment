@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.equipment.common.config.EquipmentConfig;
 import com.equipment.common.utils.ShiroUtils;
+import com.equipment.common.utils.file.FileUploadUtils;
 import com.equipment.system.domain.EquipmentType;
 import com.equipment.system.service.IEquipmentTypeService;
 import com.equipment.web.controller.converter.EquipmentVOConverter;
@@ -14,11 +16,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.equipment.common.annotation.Log;
 import com.equipment.common.enums.BusinessType;
 import com.equipment.system.domain.Equipment;
@@ -27,6 +25,7 @@ import com.equipment.common.core.controller.BaseController;
 import com.equipment.common.core.domain.AjaxResult;
 import com.equipment.common.utils.poi.ExcelUtil;
 import com.equipment.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 设备管理Controller
@@ -175,5 +174,20 @@ public class EquipmentController extends BaseController
         return toAjax(equipmentService.deleteEquipmentByIds(ids));
     }
 
+
+    @RequiresPermissions("system:equipment:upload")
+    @Log(title = "图片上传", businessType = BusinessType.INSERT)
+    @PostMapping("/upload")
+    @ResponseBody
+    public AjaxResult upload(@RequestParam("file") MultipartFile file){
+        try {
+            //上传
+            String path = FileUploadUtils.upload(EquipmentConfig.getProfile(), file);
+            return AjaxResult.success(path);
+        }catch (Exception e){
+            logger.error("上传工作日报图片失败");
+            return error();
+        }
+    }
 
 }
