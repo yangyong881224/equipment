@@ -16,10 +16,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="sysUserId"    column="sys_user_id"    />
         <result property="sysUserName"    column="sys_user_name"    />
         <result property="flag"    column="flag"    />
+        <result property="examineFlag"    column="examine_flag"    />
+        <result property="urgeReturn"    column="urge_return"    />
+        <result property="realReturnAt"    column="real_return_at"    />
     </resultMap>
 
     <sql id="selectBorrowVo">
-        select id, user_id, user_name, equipment_id, equipment_name, created_at, return_at, examine_at, sys_user_id, sys_user_name, flag from borrow
+        select id, user_id, user_name, equipment_id, equipment_name, created_at, return_at, examine_at, sys_user_id, sys_user_name, flag, examine_flag, urge_return, real_return_at from borrow
     </sql>
 
     <select id="selectBorrowList" parameterType="Borrow" resultMap="BorrowResult">
@@ -35,6 +38,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sysUserId != null "> and sys_user_id = #{sysUserId}</if>
             <if test="sysUserName != null  and sysUserName != ''"> and sys_user_name like concat('%', #{sysUserName}, '%')</if>
             <if test="flag != null "> and flag = #{flag}</if>
+            <if test="examineFlag != null "> and examine_flag = #{examineFlag}</if>
+            <if test="urgeReturn != null "> and urge_return = #{urgeReturn}</if>
+            <if test="realReturnAt != null "> and real_return_at = #{realReturnAt}</if>
         </where>
     </select>
     
@@ -56,6 +62,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sysUserId != null">sys_user_id,</if>
             <if test="sysUserName != null">sys_user_name,</if>
             <if test="flag != null">flag,</if>
+            <if test="examineFlag != null">examine_flag,</if>
+            <if test="urgeReturn != null">urge_return,</if>
+            <if test="realReturnAt != null">real_return_at,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">#{userId},</if>
@@ -68,6 +77,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sysUserId != null">#{sysUserId},</if>
             <if test="sysUserName != null">#{sysUserName},</if>
             <if test="flag != null">#{flag},</if>
+            <if test="examineFlag != null">#{examineFlag},</if>
+            <if test="urgeReturn != null">#{urgeReturn},</if>
+            <if test="realReturnAt != null">#{realReturnAt},</if>
          </trim>
     </insert>
 
@@ -84,6 +96,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sysUserId != null">sys_user_id = #{sysUserId},</if>
             <if test="sysUserName != null">sys_user_name = #{sysUserName},</if>
             <if test="flag != null">flag = #{flag},</if>
+            <if test="examineFlag != null">examine_flag = #{examineFlag},</if>
+            <if test="urgeReturn != null "> urge_return = #{urgeReturn}</if>
+            <if test="realReturnAt != null "> real_return_at = #{realReturnAt}</if>
         </trim>
         where id = #{id}
     </update>

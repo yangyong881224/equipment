@@ -156,7 +156,7 @@
         },
         plot = this;
 
-        // public functions
+        // door functions
         plot.setData = setData;
         plot.setupGrid = setupGrid;
         plot.draw = draw;
@@ -201,7 +201,7 @@
             resizeCanvas(overlay);
         };
 
-        // public attributes
+        // door attributes
         plot.hooks = hooks;
 
         // initialize

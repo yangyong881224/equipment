@@ -68,120 +68,139 @@ public class Borrow extends BaseEntity
     @Excel(name = "实际归还日期")
     private Date realReturnAt;
 
-    public void setId(Long id) 
-    {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getId() 
-    {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
-    public void setUserId(Long userId) 
-    {
+
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Long getUserId() 
-    {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
-    public void setUserName(String userName) 
-    {
+
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public String getUserName() 
-    {
-        return userName;
+    public Long getEquipmentId() {
+        return equipmentId;
     }
-    public void setEquipmentId(Long equipmentId) 
-    {
+
+    public void setEquipmentId(Long equipmentId) {
         this.equipmentId = equipmentId;
     }
 
-    public Long getEquipmentId() 
-    {
-        return equipmentId;
+    public String getEquipmentName() {
+        return equipmentName;
     }
-    public void setEquipmentName(String equipmentName) 
-    {
+
+    public void setEquipmentName(String equipmentName) {
         this.equipmentName = equipmentName;
     }
 
-    public String getEquipmentName() 
-    {
-        return equipmentName;
+    public Date getCreatedAt() {
+        return createdAt;
     }
-    public void setCreatedAt(Date createdAt) 
-    {
+
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getCreatedAt() 
-    {
-        return createdAt;
+    public Date getReturnAt() {
+        return returnAt;
     }
-    public void setReturnAt(Date returnAt) 
-    {
+
+    public void setReturnAt(Date returnAt) {
         this.returnAt = returnAt;
     }
 
-    public Date getReturnAt() 
-    {
-        return returnAt;
+    public Date getExamineAt() {
+        return examineAt;
     }
-    public void setExamineAt(Date examineAt) 
-    {
+
+    public void setExamineAt(Date examineAt) {
         this.examineAt = examineAt;
     }
 
-    public Date getExamineAt() 
-    {
-        return examineAt;
+    public Long getSysUserId() {
+        return sysUserId;
     }
-    public void setSysUserId(Long sysUserId) 
-    {
+
+    public void setSysUserId(Long sysUserId) {
         this.sysUserId = sysUserId;
     }
 
-    public Long getSysUserId() 
-    {
-        return sysUserId;
+    public String getSysUserName() {
+        return sysUserName;
     }
-    public void setSysUserName(String sysUserName) 
-    {
+
+    public void setSysUserName(String sysUserName) {
         this.sysUserName = sysUserName;
     }
 
-    public String getSysUserName() 
-    {
-        return sysUserName;
+    public Integer getFlag() {
+        return flag;
     }
-    public void setFlag(Integer flag) 
-    {
+
+    public void setFlag(Integer flag) {
         this.flag = flag;
     }
 
-    public Integer getFlag() 
-    {
-        return flag;
+    public Integer getExamineFlag() {
+        return examineFlag;
+    }
+
+    public void setExamineFlag(Integer examineFlag) {
+        this.examineFlag = examineFlag;
+    }
+
+    public Integer getUrgeFlag() {
+        return urgeFlag;
+    }
+
+    public void setUrgeFlag(Integer urgeFlag) {
+        this.urgeFlag = urgeFlag;
+    }
+
+    public Date getRealReturnAt() {
+        return realReturnAt;
+    }
+
+    public void setRealReturnAt(Date realReturnAt) {
+        this.realReturnAt = realReturnAt;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("userId", getUserId())
-            .append("userName", getUserName())
-            .append("equipmentId", getEquipmentId())
-            .append("equipmentName", getEquipmentName())
-            .append("createdAt", getCreatedAt())
-            .append("returnAt", getReturnAt())
-            .append("examineAt", getExamineAt())
-            .append("sysUserId", getSysUserId())
-            .append("sysUserName", getSysUserName())
-            .append("flag", getFlag())
-            .toString();
+        return "Borrow{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", equipmentId=" + equipmentId +
+                ", equipmentName='" + equipmentName + '\'' +
+                ", createdAt=" + createdAt +
+                ", returnAt=" + returnAt +
+                ", examineAt=" + examineAt +
+                ", sysUserId=" + sysUserId +
+                ", sysUserName='" + sysUserName + '\'' +
+                ", flag=" + flag +
+                ", examineFlag=" + examineFlag +
+                ", urgeFlag=" + urgeFlag +
+                ", realReturnAt=" + realReturnAt +
+                '}';
     }
 }

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>四川格雷能源设备有限公司</title>
+<link rel="stylesheet" href="../../static/door/css/global.css" th:href="@{/door/css/global.css}"/>
+<link rel="stylesheet" href="../../static/css/sign.css" th:href="@{/css/sign.css}">
+<script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+<script src="../../static/js/jquery.kinMaxShow-1.0.src.js" th:src="@{/js/jquery.kinMaxShow-1.0.src.js}"></script>
+<script src="../../static/js/signformchange.js" th:src="@{/js/signformchange.js}"></script>
+</head>
+
+<body>
+<!--顶部开始-->
+<div class="top">
+	<div class="topMain">
+    	<span>欢迎来到四川格雷能源设备有限公司官方网站</span>
+        <p><a href="javascript:login()" style="color:white">[登陆]</a></p>
+        <p><a href="javascript:regist()" style="color:white">[注册]</a></p>
+    </div>
+
+</div>
+<!--顶部结束-->
+<div class="mask">
+
+</div>
+
+<!--登陆框-->
+<div class="signform" id="signform" style="display: none">
+    <div class="signclose">
+        <p onclick="signclose()" style="color: green;">X</p>
+    </div>
+    <div class="userdiv">
+        <input id="user" class="signinput" type="text" placeholder="用户名" name="user" >
+    </div>
+    <div class="pwddiv">
+        <input id="pwd" class="signinput" type="password" placeholder="密码" name="pwd">
+    </div>
+    <div class="postdiv">
+        <button>登录</button>
+    </div>
+    <br>
+    <div class="change" style="color: #4d4d4d">
+        <p>还没有账号?赶快<a href="#" style="text-decoration: none;color: #43A047">注册</a>一个吧</p>
+    </div>
+</div>
+<div class="signform" id="registerform" style="display: none">
+    <div class="signclose">
+        <p onclick="signclose()" style="color: green;">X</p>
+    </div>
+    <div class="userdiv">
+        <input  id="registeruser" class="signinput" onblur="loading()" type="text" placeholder="用户名" name="user">
+    </div>
+    <!--<img src="image/signloading.gif" style="display: none" id="registerloading">-->
+    <div class="pwddiv">
+        <input  id="registerpwd" class="signinput" type="password" placeholder="密码" name="pwd">
+    </div>
+    <div class="pwddiv">
+        <input  id="registerrepwd" class="signinput" type="password" placeholder="再次输入密码" name="pwd">
+    </div>
+    <div class="postdiv">
+        <button>注册</button>
+    </div>
+    <br>
+    <div class="change" style="color: #4d4d4d">
+        <p>已有账号?立刻去<a href="#" style="text-decoration: none;color: #43A047">登录</a>吧</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -844,7 +844,7 @@
       this.options.windowPadding = [winPad, winPad, winPad, winPad];
     }
 
-    // Expose public methods
+    // Expose door methods
     this.val = Selectpicker.prototype.val;
     this.render = Selectpicker.prototype.render;
     this.refresh = Selectpicker.prototype.refresh;

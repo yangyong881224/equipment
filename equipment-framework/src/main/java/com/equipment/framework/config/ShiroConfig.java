@@ -276,7 +276,6 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/css/**", "anon");
         filterChainDefinitionMap.put("/docs/**", "anon");
         filterChainDefinitionMap.put("/fonts/**", "anon");
-        filterChainDefinitionMap.put("/door/**", "anon");
         filterChainDefinitionMap.put("/door/**/**", "anon");
         filterChainDefinitionMap.put("/img/**", "anon");
         filterChainDefinitionMap.put("/ajax/**", "anon");
@@ -290,6 +289,9 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/main/index", "anon,captchaValidate");
         // 注册相关
         filterChainDefinitionMap.put("/register", "anon,captchaValidate");
+        //门户相关
+        filterChainDefinitionMap.put("/user/**","anon,captchaValidate");
+        filterChainDefinitionMap.put("/profile/**","anon,captchaValidate");
         // 系统权限列表
         // filterChainDefinitionMap.putAll(SpringUtils.getBean(IMenuService.class).selectPermsAll());
 

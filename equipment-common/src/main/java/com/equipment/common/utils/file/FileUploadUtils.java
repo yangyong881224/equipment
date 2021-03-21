@@ -145,7 +145,12 @@ public class FileUploadUtils
     {
         int dirLastIndex = EquipmentConfig.getProfile().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
-        String pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
+        String pathFileName = "";
+        if(StringUtils.isBlank(currentDir)){
+            pathFileName = Constants.RESOURCE_PREFIX + "/" + fileName;
+        }else{
+            pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
+        }
         return pathFileName;
     }
 

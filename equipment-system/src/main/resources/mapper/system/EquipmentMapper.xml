@@ -16,10 +16,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updatedAt"    column="updated_at"    />
         <result property="updatedBy"    column="updated_by"    />
         <result property="path"    column="path"    />
+        <result property="borrowNum"    column="borrow_num"    />
     </resultMap>
 
     <sql id="selectEquipmentVo">
-        select id,name, type_id, model_num, quantity, flag, created_at, created_by, updated_at, updated_by,path from equipment
+        select id,name, type_id, model_num, quantity, flag, created_at, created_by, updated_at, updated_by,path, borrow_num from equipment
     </sql>
 
     <select id="selectEquipmentList" parameterType="Equipment" resultMap="EquipmentResult">
@@ -34,6 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
             <if test="updatedAt != null "> and updated_at = #{updatedAt}</if>
             <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="borrowNum != null  and borrowNum != ''"> and borrow_num = #{borrowNum}</if>
         </where>
     </select>
     
@@ -55,6 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createdBy != null">created_by,</if>
             <if test="updatedAt != null">updated_at,</if>
             <if test="updatedBy != null">updated_by,</if>
+            <if test="borrowNum != null">borrow_num,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="typeId != null">#{typeId},</if>
@@ -67,6 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createdBy != null">#{createdBy},</if>
             <if test="updatedAt != null">#{updatedAt},</if>
             <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="borrowNum != null">#{borrowNum},</if>
          </trim>
     </insert>
 
@@ -83,6 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createdBy != null">created_by = #{createdBy},</if>
             <if test="updatedAt != null">updated_at = #{updatedAt},</if>
             <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="borrowNum != null">borrow_num = #{borrowNum},</if>
         </trim>
         where id = #{id}
     </update>

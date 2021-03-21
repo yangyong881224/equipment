@@ -40,6 +40,9 @@ public class Equipment extends BaseEntity
     @Excel(name = "设备状态：0正常；1报销")
     private Integer flag;
 
+    @Excel(name = "被借用次数")
+    private Long borrowNum;
+
     /** $column.columnComment */
     @Excel(name = "设备状态：0正常；1报销", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createdAt;
@@ -155,18 +158,29 @@ public class Equipment extends BaseEntity
         return updatedBy;
     }
 
+    public Long getBorrowNum() {
+        return borrowNum;
+    }
+
+    public void setBorrowNum(Long borrowNum) {
+        this.borrowNum = borrowNum;
+    }
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("typeId", getTypeId())
-            .append("modelNum", getModelNum())
-            .append("quantity", getQuantity())
-            .append("flag", getFlag())
-            .append("createdAt", getCreatedAt())
-            .append("createdBy", getCreatedBy())
-            .append("updatedAt", getUpdatedAt())
-            .append("updatedBy", getUpdatedBy())
-            .toString();
+        return "Equipment{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", typeId=" + typeId +
+                ", path='" + path + '\'' +
+                ", modelNum='" + modelNum + '\'' +
+                ", quantity=" + quantity +
+                ", flag=" + flag +
+                ", borrowNum=" + borrowNum +
+                ", createdAt=" + createdAt +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedAt=" + updatedAt +
+                ", updatedBy='" + updatedBy + '\'' +
+                '}';
     }
 }
