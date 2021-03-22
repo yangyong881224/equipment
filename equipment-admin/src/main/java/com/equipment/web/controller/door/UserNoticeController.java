@@ -2,6 +2,7 @@ package com.equipment.web.controller.door;
 
 import com.equipment.common.core.controller.BaseController;
 import com.equipment.common.core.page.TableDataInfo;
+import com.equipment.common.utils.ShiroUtils;
 import com.equipment.system.domain.SysNotice;
 import com.equipment.system.service.ISysNoticeService;
 import com.github.pagehelper.PageHelper;
@@ -33,9 +34,13 @@ public class UserNoticeController extends BaseController {
 
     @ResponseBody
     @GetMapping("/paging")
-    public List<SysNotice> paging(Integer pageNo, Integer pageSize){
+    public List<SysNotice> paging(Integer pageNo, Integer pageSize, String noticeType){
+        System.out.println(ShiroUtils.getUserId());
         PageHelper.startPage(pageNo, pageSize, "create_time desc");
-        List<SysNotice> noticeList = sysNoticeService.selectNoticeList(new SysNotice());
+        SysNotice sysNotice = new SysNotice();
+        sysNotice.setNoticeType(noticeType);
+        sysNotice.setStatus("0");
+        List<SysNotice> noticeList = sysNoticeService.selectNoticeList(sysNotice);
         return noticeList;
     }
 }
