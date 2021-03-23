@@ -22,3 +22,24 @@ function signclose() {
     document.getElementsByClassName("mask")[0].style.display = "none";
 
 }
+
+function doLogin(){
+    var username = $("#username").val();
+    var password = $("#password").val();
+    console.log(username + "    "+ password)
+    $.ajax({
+        type: "post",
+        url: "login",
+        data: {
+            "username": username,
+            "password": password,
+        },
+        success: function(r) {
+            if (r.code == 0) {
+                location.href = 'index';
+            }else {
+                $.modal.msg(r.msg);
+            }
+        }
+    });
+}

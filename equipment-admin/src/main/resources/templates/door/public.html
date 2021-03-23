@@ -16,8 +16,11 @@
 <div class="top" th:fragment="public_static">
 	<div class="topMain">
     	<span>欢迎来到四川格雷能源设备有限公司官方网站</span>
-        <p><a href="javascript:regist()" style="color:white">[注册]</a></p>
-        <p><a href="javascript:login()" style="color:white">[登陆]</a></p>
+        <p th:if="${user == null}"><a  href="javascript:regist()" style="color:white">[注册]</a></p>
+        <p th:if="${user == null}"><a href="javascript:login()" style="color:white">[登陆]</a></p>
+        <p th:if="${user != null}"><a th:href="@{/user/logout}" style="color:white">[退出]</a></p>
+        <p th:if="${user != null}">欢迎 [[${#strings.defaultString(user.userName, '-')}]]&nbsp;&nbsp;</p>
+
     </div>
     <!--导航开始-->
     <div class="nav">
@@ -52,13 +55,13 @@
             <p onclick="signclose()" style="color: green;">X</p>
         </div>
         <div class="userdiv">
-            <input id="user" class="signinput" type="text" placeholder="用户名" name="user" >
+            <input id="username" class="signinput" type="text" placeholder="用户名" name="username" >
         </div>
         <div class="pwddiv">
-            <input id="pwd" class="signinput" type="password" placeholder="密码" name="pwd">
+            <input id="password" class="signinput" type="password" placeholder="密码" name="password">
         </div>
         <div class="postdiv">
-            <button>登录</button>
+            <button onclick="doLogin()">登录</button>
         </div>
         <br>
         <div class="change" style="color: #4d4d4d">

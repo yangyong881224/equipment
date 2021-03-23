@@ -33,7 +33,10 @@ function login() {
             if (r.code == 0) {
                 location.href = ctx + 'index';
             }else if(r.code == 1){
-                location.href = ctx + 'main/index';
+                $.modal.closeLoading();
+                $('.imgcode').click();
+                $(".code").val("");
+                $.modal.msg(r.msg);
             } else {
             	$.modal.closeLoading();
             	$('.imgcode').click();

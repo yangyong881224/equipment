@@ -8,6 +8,7 @@ import com.equipment.system.service.ISysNoticeService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,7 +28,10 @@ public class UserNoticeController extends BaseController {
     private ISysNoticeService sysNoticeService;
 
     @GetMapping
-    public String notice(){
+    public String notice(ModelMap mmap){
+        if(ShiroUtils.getSysUser()!=null){
+            mmap.put("user",ShiroUtils.getSysUser());
+        }
         return "/door/news";
     }
 
@@ -35,7 +39,7 @@ public class UserNoticeController extends BaseController {
     @ResponseBody
     @GetMapping("/paging")
     public List<SysNotice> paging(Integer pageNo, Integer pageSize, String noticeType){
-        System.out.println(ShiroUtils.getUserId());
+        System.out.println(ShiroUtils.getSysUser());
         PageHelper.startPage(pageNo, pageSize, "create_time desc");
         SysNotice sysNotice = new SysNotice();
         sysNotice.setNoticeType(noticeType);

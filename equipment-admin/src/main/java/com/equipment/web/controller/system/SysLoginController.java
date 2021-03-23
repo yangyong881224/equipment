@@ -49,7 +49,8 @@ public class SysLoginController extends BaseController
             subject.login(token);
             for(SysRole role : ShiroUtils.getSysUser().getRoles()){
                 if(role.getRoleId() == 2){
-                    return new AjaxResult(AjaxResult.Type.DOOR_SUCCESS, "操作成功", null);
+                    ShiroUtils.logout();
+                    return new AjaxResult(AjaxResult.Type.DOOR_SUCCESS, "没有权限", null);
                 }
             }
             return success();
