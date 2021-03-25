@@ -11,13 +11,13 @@
 <div class="n_Main">
 	<div class="n_left">
 		<div class="n_title">
-			<h3>新闻中心</h3>
-			<p>NEWS CENTER</p>
+			<h3>消息中心</h3>
+			<p>NOTICE CENTER</p>
 		</div>
 		<ul>
-			<li><a href="#">消息提醒</a></li>
-			<li><a href="#">系统公告</a></li>
-			<li><a href="#">消息通知</a></li>
+			<li><a href="javascript:noticePaging(2)" onclick="cleanPage()">系统公告</a></li>
+			<li><a href="javascript:noticePaging(1)" onclick="cleanPage()">系统通知</a></li>
+			<li><a href="javascript:noticeUrge()" onclick="cleanPage()">消息提醒</a></li>
 		</ul>
         
 		
@@ -25,17 +25,12 @@
 	
 	<div class="n_right">
 		<div class="location">
-			当前所在位置：首页 >> 公告
+			当前所在位置：<a href="/user/index">首页</a> >> <span id="BreadcrumbNavigation"> </span>
 		</div>
 		<div class="n_centent">
-			　　<div class="subCont">
-						<ul class="news_list2">
-    						<li> <span class="title"><a href="xiangxi.html" style="color:#444;font-weight:bold;">新闻名称</a></span><span class="hits">点击次数：2000</span><br />
-                                <span class="time">2016-07-23</span> <span class="class">分类：<a href="#">分类名称</a></span> </li>
-                            <li> <span class="title"><a href="xiangxi.html" style="color:#444;font-weight:bold;">新闻名称</a></span><span class="hits">点击次数：2000</span><br />
-                                <span class="time">2016-07-23</span> <span class="class">分类：<a href="#">分类名称</a></span> </li>
-						</ul>
-					</div>
+			　　<div class="subCont"  id="notices">
+
+				</div>
 		</div>
 	</div>
 </div>
@@ -49,26 +44,107 @@
 </div>
 <!--底部结束-->
 <script type="application/javascript">
-	$(function(){
+	var pageNo = 1;
+	var pageSize = 10;
+    var pageType = 2;
+
+    function cleanPage(){
+	    pageNo = 1;
+	}
+    function noticePaging(noticeType){
+        if(noticeType == 2){
+            pageType = 2;
+            $("#BreadcrumbNavigation").html("系统公告");
+        }else if(noticeType == 1){
+            pageType = 1;
+            $("#BreadcrumbNavigation").html("系统通知");
+        }
         //通知中心
         $.ajax({
             type: "get",
             url: "/user/notice/paging",
             data: {
-                pageNo:1,
-                pageSize:10
+                pageNo:pageNo,
+                pageSize:pageSize,
+                noticeType: noticeType,
             },
             success: function(data) {
                 var html = "";
-                data.forEach(function(notice, index){
-                    html += '<li><b>·</b><a href="/user/notice/'+ notice.noticeId +'">';
-                    html += notice.noticeTitle ;
-                    html += '</a><span>'+ notice.createTime +'</span></li>';
-                })
-                html += "<div class=\"clearfix\"></div>\n";
+                if(data.total > 0){
+                    html += '<ul class="news_list2">';
+                    data.rows.forEach(function(notice, index){
+                        html += '<li> <span class="title"><a href="javascript:content(\''+ notice.noticeId +'\')" style="color:#444;font-weight:bold;">'+notice.noticeTitle+'</a></span><span class="hits"></span><br />';
+                        html += '<span class="time">'+ notice.createTime +'</span>';
+                    });
+                    html += '</ul>'
+                    if(pageNo != 1){
+                        html += "上一页"
+                    }
+                    if(data.total - pageNo * pageSize > 0){
+                        html += "下一页"
+                    }
+                    $("#notices").html(html);
+				}else{
+                    html += "看看其他地方吧，这里什么都没有...";
+                }
+
+            }
+        });
+    }
+
+    function noticeUrge(){
+		$("#BreadcrumbNavigation").html("消息提醒");
+        //通知中心
+        $.ajax({
+            type: "get",
+            url: "/user/notice/borrow_urge_paging",
+            data: {
+                pageNo:pageNo,
+                pageSize:pageSize,
+            },
+            success: function(data) {
+                var html = "";
+                if(data.total > 0){
+                    html += '<ul class="news_list2">';
+                    data.rows.forEach(function(borrow, index){
+                        html += '<li> <span class="title"><a href="" style="color:#444;font-weight:bold;">'+ borrow.equipmentName +'</a></span><span class="hits"></span><br />';
+                        html += '<span class="time">应还时间：'+ returnAt +'</span>';
+                    });
+                    html += '</ul>'
+                    if(pageNo != 1){
+                        html += "上一页"
+                    }
+                    if(data.total - pageNo * pageSize > 0){
+                        html += "下一页"
+                    }
+                }else{
+                    html += "看看其他地方吧，这里什么都没有...";
+				}
                 $("#notices").html(html);
             }
         });
+    }
+
+    function content(noticeId){
+        var parent = $("#BreadcrumbNavigation").html();
+		var BreadcrumbNavigationNavigationHtml = "<a href='javascript:noticePaging(\""+pageType+"\")'>"+ parent +"</a> >>";
+        $.ajax({
+            type: "get",
+            url: "/user/notice/"+ noticeId,
+            data: {},
+            success: function(data) {
+                BreadcrumbNavigationNavigationHtml += data.noticeTitle;
+                var html = data.noticeContent;
+                $("#notices").html(html);
+                $("#BreadcrumbNavigation").html(BreadcrumbNavigationNavigationHtml);
+            }
+        });
+	}
+
+	$(function(){
+
+	    noticePaging(2);
+
 	});
 
 </script>

@@ -96,7 +96,7 @@
             },
             success: function(data) {
                 var html = "";
-                data.forEach(function(notice, index){
+                data.rows.forEach(function(notice, index){
                     html += '<li><b>·</b><a href="/user/notice/'+ notice.noticeId +'">';
                     html += notice.noticeTitle ;
                     html += '</a><span>'+ notice.createTime +'</span></li>';
