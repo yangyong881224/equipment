@@ -25,7 +25,8 @@
 <div class="product">
 	<div class="productMain">
     	<div class="ptitle">
-        	<span  id="equipment_type"></span>
+            <span>&nbsp;&nbsp;<a href="/user/equipment">更多>></a></span>
+            <span  id="equipment_type"></span>
         </div>
         <ul id="equipment">
 
@@ -38,7 +39,7 @@
 <div class="anli">
 	<div class="anliMain">
     	<div class="anlititle">
-       		<span><a href="#">更多设备>></a></span>
+       		<span><a href="/user/equipment">更多>></a></span>
         </div>
         <div class="anliList">
         	<ul id="equipmentFavorite">
@@ -53,7 +54,7 @@
 <div class="xwlx">
 	<div class="xwlxMain">
     	<div class="newsMain">
-        	<div class="ntitle"><span><a href="/user/notice">更多公告>></a></span></div>
+        	<div class="ntitle"><span><a href="/user/notice/2">更多公告>></a></span></div>
             <ul id="notices">
 
             </ul>
@@ -86,7 +87,7 @@
         });
     }
     $(function(){
-        //通知中心
+        //公告中心
         $.ajax({
             type: "get",
             url: "/user/notice/paging",
@@ -97,7 +98,7 @@
             success: function(data) {
                 var html = "";
                 data.rows.forEach(function(notice, index){
-                    html += '<li><b>·</b><a href="/user/notice/'+ notice.noticeId +'">';
+                    html += '<li><b>·</b><a href="/user/notice/detail/'+ notice.noticeId +'">';
                     html += notice.noticeTitle ;
                     html += '</a><span>'+ notice.createTime +'</span></li>';
                 })
@@ -109,9 +110,10 @@
         //产品展示-类别
         $.ajax({
             type: "get",
-            url: "/user/equipment_type/list",
+            url: "/user/equipment_type/paging",
             data: {
-
+                pageNo:1,
+                pageSize:10
             },
             success: function(data) {
                 var html = "";
@@ -119,7 +121,7 @@
                     if(index == 0){
                         equipment(equipmentType.id);
                     }
-                    html += ' <a href="javascript:equipment('+equipmentType.id+')">'+ equipmentType.typeName +'</a> / ';
+                    html += ' <a href="javascript:equipment('+equipmentType.id+')">'+ equipmentType.typeName +'</a> | ';
                 })
                 $("#equipment_type").html(html);
             }

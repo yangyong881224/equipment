@@ -1,7 +1,9 @@
 package com.equipment.web.controller.door;
 
+import com.equipment.system.domain.Equipment;
 import com.equipment.system.domain.EquipmentType;
 import com.equipment.system.service.IEquipmentTypeService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +24,12 @@ public class UserEquipmentTypeController {
     @Autowired
     private IEquipmentTypeService equipmentTypeService;
 
-    @GetMapping("/list")
+    @GetMapping("/paging")
     @ResponseBody
-    public List<EquipmentType> list(){
-        return equipmentTypeService.selectEquipmentTypeList(new EquipmentType());
+    public List<EquipmentType> list(Integer pageNo, Integer pageSize){
+        PageHelper.startPage(pageNo, pageSize);
+        EquipmentType equipmentType = new EquipmentType();
+        equipmentType.setDeleted(0);
+        return equipmentTypeService.selectEquipmentTypeList(equipmentType);
     }
 }

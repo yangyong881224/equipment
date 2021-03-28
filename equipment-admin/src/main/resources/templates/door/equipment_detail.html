@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:include="/door/public :: header('设备详情')" />
+
+</head>
+<body>
+<div th:block th:insert="~{/door/public :: public_static}" ></div>
+
+
+
+<!--内页详情开始-->
+<div class="n_Main">
+	<div class="n_left">
+		<div class="n_title">
+			<h3>设备展示</h3>
+			<p>EQUIPMENT SHOW</p>
+		</div>
+		<ul id="equipment_type">
+
+		</ul>
+	</div>
+	
+	<div class="n_right">
+		<div class="location">
+			当前所在位置：首页 >> 详细页
+		</div>
+		<div class="n_centent">
+			<dev style="background-color:#FFFF00;height:1000px;width:470px;float:left;" id="path">
+
+			</dev>
+
+			<dev style="background-color:blue;color:#FFFFFF;height:500px;width: 500px;float:right;">
+
+			</dev>
+		</div>
+	</div>
+</div>
+<!--内页详情结束-->
+
+<script type="application/javascript">
+
+	$(function(){
+		var equipment = '[[${equipment}]]';
+		console.log(equipment)
+		var path = equipment.path;
+		$("#path").html('<img src="'+path+'"/>');
+	})
+
+</script>
+</body>
+</html>

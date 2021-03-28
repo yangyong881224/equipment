@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:include="/door/public :: header('设备中心')" />
+
+</head>
+<body>
+<div th:block th:insert="~{/door/public :: public_static}" ></div>
+<!--导航结束-->
+
+
+
+<!--内页详情开始-->
+<div class="n_Main">
+	<div class="n_left">
+		<div class="n_title">
+			<h3>设备展示</h3>
+			<p>EQUIPMENT SHOW</p>
+		</div>
+		<ul id="equipment_type">
+
+		</ul>
+	</div>
+	
+	<div class="n_right">
+		<div class="location">
+			当前所在位置：首页 >> 产品中心
+		</div>
+		<div class="n_centent">
+			<ul class="alMain" id="equipment">
+
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script type="application/javascript">
+	$(function(){
+        $.ajax({
+            type: "get",
+            url: "/user/equipment_type/paging",
+            data: {
+                pageNo:1,
+                pageSize:100
+            },
+            success: function(data) {
+                var html = "";
+                data.forEach(function(equipmentType, index){
+                    if(index == 0){
+                        equipment(equipmentType.id);
+                    }
+                    html += '<li><a href="javascript:equipment('+equipmentType.id+')">'+equipmentType.typeName+'</a></li> ';
+                })
+                $("#equipment_type").html(html);
+            }
+        });
+	})
+
+	function equipment(typeId){
+        $.ajax({
+            type: "get",
+            url: "/user/equipment/paging",
+            data: {
+                typeId:typeId,
+                pageSize:20,
+                pageNo:1
+            },
+            success: function(data) {
+                var html = "";
+                data.forEach(function(equipment, index){
+                    html += '<li><a href="/user/equipment/detail/'+ equipment.id +'" target="_blank"><img src="'+ equipment.path +'" width="216" height="146"/><p>'+ equipment.name +'</p></a></li>';
+                })
+                $("#equipment").html(html);
+            }
+        });
+	}
+
+
+</script>
+</body>
+</html>

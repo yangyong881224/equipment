@@ -34,12 +34,22 @@ public class UserNoticeController extends BaseController {
     @Autowired
     private IBorrowService borrowService;
 
-    @GetMapping
-    public String notice(ModelMap mmap){
+    @GetMapping("/{noticeTypeId}")
+    public String notice(ModelMap mmap, @PathVariable Integer noticeTypeId){
         if(ShiroUtils.getSysUser()!=null){
             mmap.put("user",ShiroUtils.getSysUser());
         }
+        mmap.put("noticeTypeId",noticeTypeId);
         return "/door/news";
+    }
+
+    @GetMapping("/detail/{noticeId}")
+    public String detail(ModelMap mmap, @PathVariable Long noticeId){
+        if(ShiroUtils.getSysUser() != null){
+            mmap.put("user",ShiroUtils.getSysUser());
+        }
+        mmap.put("noticeId", noticeId);
+        return "/door/news_detail";
     }
 
 
@@ -59,15 +69,14 @@ public class UserNoticeController extends BaseController {
     public TableDataInfo borrowUrgePaging(Integer pageNo, Integer pageSize){
         PageHelper.startPage(pageNo, pageSize, "(now()-return_at) desc");
         Borrow borrow = new Borrow();
-        borrow.setUrgeFlag(1);
-        borrow.setFlag(BorrowFlagEnum.RETURN_BACK.getCode());
+        borrow.setUrgeReturn(1);
         List<Borrow> borrowList = borrowService.selectBorrowList(borrow);
         return getDataTable(borrowList);
     }
 
 
     @ResponseBody
-    @GetMapping("/{noticeId}")
+    @GetMapping("/content/{noticeId}")
     public SysNotice content(@PathVariable Long noticeId){
         return sysNoticeService.selectNoticeById(noticeId);
     }

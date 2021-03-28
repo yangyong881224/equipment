@@ -15,17 +15,17 @@
 			<p>NOTICE CENTER</p>
 		</div>
 		<ul>
-			<li><a href="javascript:noticePaging(2)" onclick="cleanPage()">系统公告</a></li>
-			<li><a href="javascript:noticePaging(1)" onclick="cleanPage()">系统通知</a></li>
-			<li><a href="javascript:noticeUrge()" onclick="cleanPage()">消息提醒</a></li>
+			<li><a href="/user/notice/2">系统公告</a></li>
+			<li><a href="/user/notice/1">系统通知</a></li>
+			<li><a href="/user/notice/0">消息提醒</a></li>
 		</ul>
-        
-		
+
+
 	</div>
-	
+
 	<div class="n_right">
 		<div class="location">
-			当前所在位置：<a href="/user/index">首页</a> >> <span id="BreadcrumbNavigation"> </span>
+			当前所在位置：<a href="/user/index">首页</a> >> 消息中心
 		</div>
 		<div class="n_centent">
 			　　<div class="subCont"  id="notices">
@@ -36,29 +36,11 @@
 </div>
 <!--内页详情结束-->
 
-
-<!--底部开始-->
-<div class="foot">
-	<p>联系电话：0816-8888888    地址：四川省绵阳市涪城区东城宜家美4楼</p>
-    <p>Copyright © 2016   四川格雷能源设备有限公司   All  Rights  Reserved　蜀ICP备1508888888号-1　技术支持：<a href="http://www.zgzj.cn.com">中巨科技</a> [<a href="/manager">后台管理</a>]</p>
-</div>
-<!--底部结束-->
 <script type="application/javascript">
 	var pageNo = 1;
 	var pageSize = 10;
-    var pageType = 2;
 
-    function cleanPage(){
-	    pageNo = 1;
-	}
     function noticePaging(noticeType){
-        if(noticeType == 2){
-            pageType = 2;
-            $("#BreadcrumbNavigation").html("系统公告");
-        }else if(noticeType == 1){
-            pageType = 1;
-            $("#BreadcrumbNavigation").html("系统通知");
-        }
         //通知中心
         $.ajax({
             type: "get",
@@ -73,15 +55,15 @@
                 if(data.total > 0){
                     html += '<ul class="news_list2">';
                     data.rows.forEach(function(notice, index){
-                        html += '<li> <span class="title"><a href="javascript:content(\''+ notice.noticeId +'\')" style="color:#444;font-weight:bold;">'+notice.noticeTitle+'</a></span><span class="hits"></span><br />';
+                        html += '<li> <span class="title"><a href="/user/notice/detail/'+ notice.noticeId +'" style="color:#444;font-weight:bold;">'+notice.noticeTitle+'</a></span><span class="hits"></span><br />';
                         html += '<span class="time">'+ notice.createTime +'</span>';
                     });
                     html += '</ul>'
                     if(pageNo != 1){
-                        html += "上一页"
+                        html += "<a href='javascript:previous01(\""+noticeType+"\")'><<上一页 &nbsp;&nbsp;</a>"
                     }
                     if(data.total - pageNo * pageSize > 0){
-                        html += "下一页"
+                        html += "<a href='javascript:next01(\""+noticeType+"\")'>下一页>></a>"
                     }
                     $("#notices").html(html);
 				}else{
@@ -93,7 +75,6 @@
     }
 
     function noticeUrge(){
-		$("#BreadcrumbNavigation").html("消息提醒");
         //通知中心
         $.ajax({
             type: "get",
@@ -107,15 +88,15 @@
                 if(data.total > 0){
                     html += '<ul class="news_list2">';
                     data.rows.forEach(function(borrow, index){
-                        html += '<li> <span class="title"><a href="" style="color:#444;font-weight:bold;">'+ borrow.equipmentName +'</a></span><span class="hits"></span><br />';
-                        html += '<span class="time">应还时间：'+ returnAt +'</span>';
+                        html += '<li> <span class="title"><a href="" style="color:#444;font-weight:bold;">'+ borrow.equipmentName +'——催还提醒</a></span><span class="hits"></span><br />';
+                        html += '<span class="time">应还时间：'+ borrow.returnAt +'</span>';
                     });
                     html += '</ul>'
                     if(pageNo != 1){
-                        html += "上一页"
+                        html += "<a href='javascript:previous02(\""+noticeType+"\")'><<上一页</a>>"
                     }
                     if(data.total - pageNo * pageSize > 0){
-                        html += "下一页"
+                        html += "<a href='javascript:next02(\""+noticeType+"\")'>下一页>></a>"
                     }
                 }else{
                     html += "看看其他地方吧，这里什么都没有...";
@@ -125,26 +106,33 @@
         });
     }
 
-    function content(noticeId){
-        var parent = $("#BreadcrumbNavigation").html();
-		var BreadcrumbNavigationNavigationHtml = "<a href='javascript:noticePaging(\""+pageType+"\")'>"+ parent +"</a> >>";
-        $.ajax({
-            type: "get",
-            url: "/user/notice/"+ noticeId,
-            data: {},
-            success: function(data) {
-                BreadcrumbNavigationNavigationHtml += data.noticeTitle;
-                var html = data.noticeContent;
-                $("#notices").html(html);
-                $("#BreadcrumbNavigation").html(BreadcrumbNavigationNavigationHtml);
-            }
-        });
+    function next01(noticeType){
+        pageNo ++;
+        noticePaging(noticeType);
+	}
+
+	function next02(){
+        pageNo ++;
+        noticeUrge();
+	}
+
+	function previous01(noticeType){
+        pageNo --;
+        noticePaging(noticeType)
+	}
+
+	function previous02(){
+        pageNo --;
+        noticeUrge();
 	}
 
 	$(function(){
-
-	    noticePaging(2);
-
+        var noticeTypeId = '[[${noticeTypeId}]]';
+		if(noticeTypeId == 0){
+		    noticeUrge();
+		}else{
+            noticePaging(noticeTypeId);
+        }
 	});
 
 </script>

@@ -26,19 +26,18 @@ function signclose() {
 function doLogin(){
     var username = $("#username").val();
     var password = $("#password").val();
-    console.log(username + "    "+ password)
     $.ajax({
         type: "post",
-        url: "login",
+        url: "/user/login",
         data: {
             "username": username,
             "password": password,
         },
         success: function(r) {
             if (r.code == 0) {
-                location.href = 'index';
+                location.href = '/user/index';
             }else {
-                $.modal.msg(r.msg);
+                alert("用户名密码错误");
             }
         }
     });

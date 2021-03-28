@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:include="/door/public :: header('消息详情')" />
+
+</head>
+<body>
+<div th:block th:insert="~{/door/public :: public_static}" ></div>
+
+<!--内页详情开始-->
+<div class="n_Main">
+	<div class="n_left">
+		<div class="n_title">
+			<h3>消息中心</h3>
+			<p>NOTICE CENTER</p>
+		</div>
+		<ul>
+			<li><a href="/user/notice/2">系统公告</a></li>
+			<li><a href="/user/notice/1">系统通知</a></li>
+			<li><a href="/user/notice/0">消息提醒</a></li>
+		</ul>
+        
+		
+	</div>
+	
+	<div class="n_right">
+		<div class="location">
+			当前所在位置：<a href="/user/index">首页</a> >> 消息中心
+		</div>
+		<div class="n_centent">
+
+			<div class="listConts">
+
+				<!-- 标题区域开始 -->
+				<h1 class="title" id="title"></h1>
+				<div class="info" id="updateTime"><small>更新时间：</small></div>
+				<!-- 标题区域结束 -->
+
+
+				<!-- 内容区域开始 -->
+				<div id="textarea">
+
+				</div>
+				<!-- 内容区域结束 -->
+			</div>
+		</div>
+	</div>
+</div>
+<!--内页详情结束-->
+
+<script type="application/javascript">
+
+    function content(noticeId){
+        $.ajax({
+            type: "get",
+            url: "/user/notice/content/"+ noticeId,
+            data: {},
+            success: function(data) {
+                $("#textarea").html(data.noticeContent);
+                $("#title").html(data.noticeTitle);
+                var updateTimeHtml = "<small>更新时间：</small>"
+                if(data.updateTime == null){
+                    updateTimeHtml += data.createTime;
+				}else{
+                    updateTimeHtml += data.updateTime;
+				}
+                $("#updateTime").html(updateTimeHtml);
+            }
+        });
+	}
+
+	$(function(){
+		var noticeId = '[[${noticeId}]]';
+	    content(noticeId);
+	});
+
+</script>
+</body>
+</html>

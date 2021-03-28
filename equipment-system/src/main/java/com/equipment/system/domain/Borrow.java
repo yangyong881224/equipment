@@ -63,7 +63,7 @@ public class Borrow extends BaseEntity
     private Integer examineFlag;
 
     @Excel(name = "是否催还")
-    private Integer urgeFlag;
+    private Integer urgeReturn;
 
     @Excel(name = "实际归还日期")
     private Date realReturnAt;
@@ -168,20 +168,20 @@ public class Borrow extends BaseEntity
         this.examineFlag = examineFlag;
     }
 
-    public Integer getUrgeFlag() {
-        return urgeFlag;
-    }
-
-    public void setUrgeFlag(Integer urgeFlag) {
-        this.urgeFlag = urgeFlag;
-    }
-
     public Date getRealReturnAt() {
         return realReturnAt;
     }
 
     public void setRealReturnAt(Date realReturnAt) {
         this.realReturnAt = realReturnAt;
+    }
+
+    public Integer getUrgeReturn() {
+        return urgeReturn;
+    }
+
+    public void setUrgeReturn(Integer urgeReturn) {
+        this.urgeReturn = urgeReturn;
     }
 
     @Override
@@ -199,7 +199,7 @@ public class Borrow extends BaseEntity
                 ", sysUserName='" + sysUserName + '\'' +
                 ", flag=" + flag +
                 ", examineFlag=" + examineFlag +
-                ", urgeFlag=" + urgeFlag +
+                ", urgeReturn=" + urgeReturn +
                 ", realReturnAt=" + realReturnAt +
                 '}';
     }

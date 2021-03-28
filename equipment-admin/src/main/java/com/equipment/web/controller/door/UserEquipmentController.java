@@ -1,14 +1,18 @@
 package com.equipment.web.controller.door;
 
+import com.equipment.common.utils.ShiroUtils;
 import com.equipment.system.domain.Equipment;
 import com.equipment.system.service.IEquipmentService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -22,6 +26,24 @@ public class UserEquipmentController {
 
     @Autowired
     private IEquipmentService equipmentService;
+
+    @GetMapping
+    public String equipment(ModelMap mmap){
+        if(ShiroUtils.getSysUser()!=null){
+            mmap.put("user",ShiroUtils.getSysUser());
+        }
+        return "/door/equipment";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String equipmentDtail(ModelMap mmap, @PathVariable Long id){
+        if(ShiroUtils.getSysUser()!=null){
+            mmap.put("user",ShiroUtils.getSysUser());
+        }
+        Equipment equipment = equipmentService.selectEquipmentById(id);
+        mmap.put("equipment",equipment);
+        return "/door/equipment_detail";
+    }
 
     @GetMapping("/paging")
     @ResponseBody
@@ -40,5 +62,12 @@ public class UserEquipmentController {
         Equipment equipment = new Equipment();
         equipment.setFlag(0);
         return equipmentService.selectEquipmentList(equipment);
+    }
+
+    public static void main(String[] args) {
+        long i = -0L;
+        BigDecimal cent = BigDecimal.valueOf(-i);
+        BigDecimal yuan = cent.divide(BigDecimal.valueOf(100));
+        System.out.println(String.format("%.2f",yuan));
     }
 }

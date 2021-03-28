@@ -12,6 +12,7 @@
 .n_left ul li{text-align:center; border-bottom:1px dashed #ccc;}
 .n_left ul li a{ width:100%; background:#fff; display:block; padding:15px 0px; font-size:15px; font-family:microsoft yahei; color:#666;}
 .n_left ul li a:hover{ width:100%; background:#159301; color:#fff;}
+.n_left ul li:target {background-color:#FF0; }
 .QQline{ margin:10px 0px;}
 .n_contact{ margin-top:10px; color:#777; font-size:14px; font-family:microsoft yahei; line-height:32px;}
 .location{ position:relative; width:100%; height:35px; background:#fff; border-bottom:1px solid #045091; color:#666; font-size:14px; font-family:microsoft yahei; line-height:35px;}
@@ -86,7 +87,7 @@
 
 /**案例**/
 .n_centent ul.alMain{overflow:hidden;}
-.n_centent ul.alMain li {width: 240px;height: 165px;background: url(../images/honorlist.png) no-repeat;float: left;margin: 16px 32px; margin-bottom:25px;}
+.n_centent ul.alMain li {width: 240px;height: 165px;background: url(../images/2.jpg) no-repeat;float: left;margin: 16px 32px; margin-bottom:25px;}
 .n_centent ul.alMain li a{color:#666; text-decoration:none;}
 .n_centent ul.alMain li p{text-align:center;}
 .alMain li img{padding-left: 9px; padding-top: 8px; margin-bottom:10px;}
