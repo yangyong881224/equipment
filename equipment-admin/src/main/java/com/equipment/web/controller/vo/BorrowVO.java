@@ -1,28 +1,22 @@
-package com.equipment.system.domain;
+package com.equipment.web.controller.vo;
 
-import java.util.Date;
-
-import com.equipment.common.utils.DateUtils;
+import com.equipment.common.annotation.Excel;
+import com.equipment.common.core.domain.BaseEntity;
 import com.equipment.system.enums.BorrowExamineFlagEnum;
 import com.equipment.system.enums.BorrowFlagEnum;
 import com.equipment.system.enums.BorrowUserStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.equipment.common.annotation.Excel;
-import com.equipment.common.core.domain.BaseEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
- * 借用管理对象 borrow
- * 
- * @author equipment
- * @date 2021-02-28
+ * @BorrowVO:
+ * @author: Yayo
+ * @date: 2021/3/30 16:42
  */
-public class Borrow extends BaseEntity
-{
-    private static final long serialVersionUID = 1L;
+public class BorrowVO extends BaseEntity implements Serializable {
 
     /** 借用id */
     private Long id;
@@ -82,11 +76,7 @@ public class Borrow extends BaseEntity
     //是否超时
     private boolean overtime = false;
 
-
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    private String userStatus;
 
     public Long getId() {
         return id;
@@ -207,23 +197,25 @@ public class Borrow extends BaseEntity
         return overtime;
     }
 
-    @Override
-    public String toString() {
-        return "Borrow{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", equipmentId=" + equipmentId +
-                ", equipmentName='" + equipmentName + '\'' +
-                ", createdAt=" + createdAt +
-                ", returnAt=" + returnAt +
-                ", examineAt=" + examineAt +
-                ", sysUserId=" + sysUserId +
-                ", sysUserName='" + sysUserName + '\'' +
-                ", flag=" + flag +
-                ", examineFlag=" + examineFlag +
-                ", urgeReturn=" + urgeReturn +
-                ", realReturnAt=" + realReturnAt +
-                '}';
+    public String getUserStatus() {
+        if(flag==BorrowFlagEnum.WAIT_BORROW_EXAMINE.getCode() && examineFlag == BorrowExamineFlagEnum.NOT_EXAMINE.getCode()){
+            userStatus = BorrowUserStatus.BORROW_APPLY.name();
+        }else if(flag == BorrowFlagEnum.BORROWING.getCode()){
+            userStatus = BorrowUserStatus.BORROW_NOW.name();
+        }else if(returnAt.compareTo(new Date())<1){
+            userStatus = BorrowUserStatus.BORROW_OVERDUE.name();
+        } else if(flag==BorrowFlagEnum.WAIT_RETURN_EXAMINE.getCode() && examineFlag == BorrowExamineFlagEnum.NOT_EXAMINE.getCode()){
+            userStatus = BorrowUserStatus.BORROW_EXAMINE.name();
+        } else if(flag == BorrowFlagEnum.RETURN_BACK.getCode() && examineFlag == BorrowExamineFlagEnum.AGREE_RETURN_BACK.getCode()){
+            userStatus = BorrowUserStatus.BORROW_HISTORY.name();
+        } else if(examineFlag == BorrowExamineFlagEnum.REFUSE_BORROW.getCode() || examineFlag == BorrowExamineFlagEnum.REFUSE_RETURN_BACK.getCode()){
+            userStatus = BorrowUserStatus.BORROW_REFUSE.name();
+        }
+        return userStatus;
     }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
 }

@@ -35,7 +35,7 @@ function doLogin(){
         },
         success: function(r) {
             if (r.code == 0) {
-                location.href = '/user/index';
+                location.replace(location);
             }else {
                 alert("用户名密码错误");
             }

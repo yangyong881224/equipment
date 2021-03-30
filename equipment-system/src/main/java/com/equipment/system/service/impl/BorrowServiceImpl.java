@@ -91,4 +91,14 @@ public class BorrowServiceImpl implements IBorrowService
     {
         return borrowMapper.deleteBorrowById(id);
     }
+
+    @Override
+    public List<Borrow> selectOverdueList(Borrow borrow) {
+        return borrowMapper.selectOverdueList(borrow);
+    }
+
+    @Override
+    public List<Borrow> selectRefuseList(Borrow borrow) {
+        return borrowMapper.selectRefunsList(borrow);
+    }
 }

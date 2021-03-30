@@ -2,7 +2,8 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<th:block th:include="/door/public :: header('设备详情')" />
-
+	<script th:src="@{/equipment/js/common.js?v=4.5.1}"></script>
+	<script th:src="@{/ajax/libs/layui/layui.js}"></script>
 </head>
 <body>
 <div th:block th:insert="~{/door/public :: public_static}" ></div>
@@ -14,7 +15,7 @@
 	<div class="n_left">
 		<div class="n_title">
 			<h3>设备展示</h3>
-			<p>EQUIPMENT SHOW</p>
+			<p>EQUIPMENT DETAIL</p>
 		</div>
 		<ul id="equipment_type">
 
@@ -23,29 +24,77 @@
 	
 	<div class="n_right">
 		<div class="location">
-			当前所在位置：首页 >> 详细页
+			当前所在位置：首页 >> <a href="/user/equipment">产品中心</a> >> 详细页
 		</div>
 		<div class="n_centent">
-			<dev style="background-color:#FFFF00;height:1000px;width:470px;float:left;" id="path">
+			<div style="height:1000px;width:470px;float:left;" id="path">
 
-			</dev>
+			</div>
 
-			<dev style="background-color:blue;color:#FFFFFF;height:500px;width: 500px;float:right;">
-
-			</dev>
+			<div style="height:500px;width: 460px;float:right;line-height:100px;text-align: center;">
+				<div style="height: 15%" id="equipmentName"></div>
+				<div style="height: 15%" id="equipmentModelNum"></div>
+				<div style="height: 15%" id="equipmentQuantity"></div>
+				<div style="height: 15%">
+					<span>借用时间：</span><input type="text" class="time-input"  id="createdAt" readonly />
+				</div>
+				<div style="height: 15%">
+					<span>归还时间：</span><input type="text" class="time-input" id="returnAt" readonly/>
+				</div>
+				<div class="postdiv">
+					<button onclick="borrow()">申请借用设备</button>
+				</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 <!--内页详情结束-->
-
+<input id="equipmentId" type="hidden"/>
 <script type="application/javascript">
 
 	$(function(){
-		var equipment = '[[${equipment}]]';
-		console.log(equipment)
-		var path = equipment.path;
-		$("#path").html('<img src="'+path+'"/>');
+
+		$("#path").html('<img src="[[${equipment.path}]]" style="width:100%"/>');
+		$("#equipmentName").html('<span>设备名称：</span><span id="eqName"> [[${equipment.name}]]</span>');
+		$("#equipmentModelNum").html('<span>设备型号：</span><span> [[${equipment.ModelNum}]]</span>');
+		$("#equipmentQuantity").html('<span>剩余数量：</span><span> [[${equipment.quantity - equipment.borrowQuantity}]]</span>');
+		$("#equipmentId").val('[[${equipment.id}]]');
+
 	})
+
+	function borrow(){
+	    if([[${user==null}]]){
+            login();
+            return;
+		}
+	    var equipmentName = $("#eqName").html();
+	    var equipmentId = $("#equipmentId").val();
+	    var createdAt = $("#createdAt").val();
+	    var returnAt = $("#returnAt").val();
+	    if(createdAt == "" || returnAt == ""){
+	        alert("请填写时间");
+	        return;
+		}
+        $.ajax({
+            type: "post",
+            url: "/user/borrow",
+            data: {
+                equipmentId:equipmentId,
+                createdAt:createdAt,
+                returnAt:returnAt,
+				equipmentName:equipmentName
+            },
+            success: function(data) {
+                console.log(data)
+                if(data == true){
+                    alert("申请成功");
+                }else{
+                    alert("系统异常")
+				}
+            }
+        });
+	}
 
 </script>
 </body>

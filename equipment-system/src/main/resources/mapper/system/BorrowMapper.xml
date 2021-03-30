@@ -114,4 +114,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="selectOverdueList" parameterType="Borrow" resultMap="BorrowResult">
+        <include refid="selectBorrowVo"/>
+        where user_id = #{userId} and return_at.before(now())
+    </select>
+
+    <select id="selectRefunsList" parameterType="Borrow" resultMap="BorrowResult">
+        <include refid="selectBorrowVo"/>
+        where user_id = #{userId} and (examine_flag = 2 or examine_flag = 4)
+    </select>
+
 </mapper>

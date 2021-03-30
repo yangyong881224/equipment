@@ -7,7 +7,7 @@ package com.equipment.system.enums;
  */
 public enum BorrowFlagEnum {
 
-    WAIT_BORROW_EXAMINE(0, "等待借用管审批"),
+    WAIT_BORROW_EXAMINE(0, "等待借用审批"),
     BORROWING(1, "正在借用"),
     WAIT_RETURN_EXAMINE(2, "等待归还审批"),
     RETURN_BACK(3, "已归还");

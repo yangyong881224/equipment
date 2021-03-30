@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -62,12 +61,5 @@ public class UserEquipmentController {
         Equipment equipment = new Equipment();
         equipment.setFlag(0);
         return equipmentService.selectEquipmentList(equipment);
-    }
-
-    public static void main(String[] args) {
-        long i = -0L;
-        BigDecimal cent = BigDecimal.valueOf(-i);
-        BigDecimal yuan = cent.divide(BigDecimal.valueOf(100));
-        System.out.println(String.format("%.2f",yuan));
     }
 }

@@ -58,4 +58,8 @@ public interface BorrowMapper
      * @return 结果
      */
     public int deleteBorrowByIds(String[] ids);
+
+    List<Borrow> selectOverdueList(Borrow borrow);
+
+    List<Borrow> selectRefunsList(Borrow borrow);
 }

@@ -58,4 +58,8 @@ public interface IBorrowService
      * @return 结果
      */
     public int deleteBorrowById(Long id);
+
+    List<Borrow> selectOverdueList(Borrow borrow);
+
+    List<Borrow> selectRefuseList(Borrow borrow);
 }

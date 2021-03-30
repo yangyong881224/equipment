@@ -50,6 +50,8 @@ public class Equipment extends BaseEntity
     /** $column.columnComment */
     @Excel(name = "设备状态：0正常；1报销")
     private String createdBy;
+    @Excel(name = "借走数量")
+    private Integer borrowQuantity;
 
     public String getPath() {
         return path;
@@ -158,6 +160,14 @@ public class Equipment extends BaseEntity
         return updatedBy;
     }
 
+    public Integer getBorrowQuantity() {
+        return borrowQuantity;
+    }
+
+    public void setBorrowQuantity(Integer borrowQuantity) {
+        this.borrowQuantity = borrowQuantity;
+    }
+
     public Long getBorrowNum() {
         return borrowNum;
     }
@@ -179,6 +189,7 @@ public class Equipment extends BaseEntity
                 ", borrowNum=" + borrowNum +
                 ", createdAt=" + createdAt +
                 ", createdBy='" + createdBy + '\'' +
+                ", borrowQuantity=" + borrowQuantity +
                 ", updatedAt=" + updatedAt +
                 ", updatedBy='" + updatedBy + '\'' +
                 '}';

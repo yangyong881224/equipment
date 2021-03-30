@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="/door/public :: header('首页')" />
+</head>
+<body>
+<div th:block th:insert="~{/door/public :: public_static}" ></div>
+<!--导航结束-->
+
+
+
+<!--内页详情开始-->
+<div class="n_Main">
+	<div class="n_left">
+		<div class="n_title">
+			<h3>我的借用</h3>
+			<p>MY BORROW</p>
+		</div>
+		<ul>
+			<li><a href="javascript:paging('BORROW_APPLY')">借用申请</a></li>
+			<li><a href="javascript:paging('BORROW_NOW')">正在借用</a></li>
+			<li><a href="javascript:paging('BORROW_OVERDUE')">逾期未还</a></li>
+			<li><a href="javascript:paging('BORROW_EXAMINE')">归还审核</a></li>
+			<li><a href="javascript:paging('BORROW_HISTORY')">归还历史</a></li>
+			<li><a href="javascript:paging('BORROW_REFUSE')">申请被拒</a></li>
+		</ul>
+
+	</div>
+	
+	<div class="n_right">
+		<div class="location">
+			当前所在位置：首页 >> 我的留言
+		</div>
+		<div class="n_centent">
+            <table style="width:100%">
+                <thead>
+                    <tr>
+                        <td style="width:20%">设备名称</td>
+                        <td style="width:16%">计划借用日期</td>
+                        <td style="width:16%">计划归还日期</td>
+                        <td style="width:16%">状态</td>
+                        <td style="width:16%">实际归还日期</td>
+                        <td style="width:16%">操作</td>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--内页详情结束-->
+<script type="application/javascript">
+    var pageNo = 1;
+    var pageSize = 20;
+    var userStatus = "BORROW_APPLY";
+    paging(userStatus);
+    function paging(status){
+        userStatus = status;
+        $.ajax({
+            type: "get",
+            url: "/user/borrow/paging",
+            data: {
+                pageNo:pageNo,
+                pageSize:pageSize,
+                userStatus: userStatus
+            },
+            success: function(data) {
+                var html = "";
+                data.rows.forEach(function(borrow, index){
+                    html += '<tr>';
+                    html += '<td>'+ borrow.equipmentName +'</td>';
+                    html += '<td>'+ borrow.createdAt +'</td>';
+                    html += '<td>'+ borrow.returnAt +'</td>';
+                    if(borrow.userStatus == "BORROW_APPLY"){
+                        html += '<td>正在申请</td>';
+                    }else if(borrow.userStatus == "BORROW_NOW"){
+                        html += '<td>正在借用</td>';
+                    }else if(borrow.userStatus == "BORROW_OVERDUE"){
+                        html += '<td>逾期未还</td>';
+                    }else if(borrow.userStatus == "BORROW_EXAMINE"){
+                        html += '<td>归还审核</td>';
+                    }else if(borrow.userStatus == "BORROW_HISTORY"){
+                        html += '<td>归还历史</td>';
+                    }else if(borrow.userStatus == "BORROW_REFUSE"){
+                        html += '<td>被拒申请</td>';
+                    }else{
+                        html += '<td>状态异常</td>';
+                    }
+                    html += '<td>'+ borrow.realReturnAt +'</td>';
+                    html += '<td><button>提交</button></td>';
+                    html += '</tr>';
+                })
+                $("#tbody").html(html);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

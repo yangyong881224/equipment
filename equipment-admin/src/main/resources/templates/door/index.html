@@ -5,11 +5,7 @@
 </head>
 <body>
 <div th:block th:insert="~{/door/public :: public_static}" ></div>
-<script type="text/javascript">
-    $(function(){
-        $("#kinMaxShow").kinMaxShow();
-    });
-</script>
+
 <div class="banner">
     <div class="bannerMain">
         <div id="kinMaxShow">
@@ -80,13 +76,32 @@
             success: function(data) {
                 var html = "";
                 data.forEach(function(equipment, index){
-                    html += '<li><a href="#"><img src="'+ equipment.path +'" width="264" height="198" /><p>'+ equipment.name +'</p></a></li>';
+                    html += '<li><a target="_blank" href="/user/equipment/detail/'+ equipment.id +'"><img src="'+ equipment.path +'" width="264" height="198" /><p>'+ equipment.name +'</p></a></li>';
                 })
                 $("#equipment").html(html);
             }
         });
     }
     $(function(){
+        //banner
+        $.ajax({
+            type: "get",
+            url: "/user/banner/list",
+            data: {},
+            success: function(data) {
+                var html = "";
+                data.forEach(function(banner, index){
+                    html += '<div>';
+                    html += '<a target="_blank" href="/user/equipment/detail/'+ banner.equipmentId +'"><img src="'+ banner.bannerPath +'"/></ a>';
+                    html += '</div>';
+                })
+                $("#kinMaxShow").html(html);
+                $("#kinMaxShow").kinMaxShow({
+                    height:500
+                });
+            }
+        });
+
         //公告中心
         $.ajax({
             type: "get",
@@ -137,15 +152,11 @@
             success: function(data) {
                 var html = "";
                 data.forEach(function(equipment, index){
-                    html += '<li><a href="#"><img src="'+ equipment.path +'" width="264" height="198"/></a></li>';
+                    html += '<li><a target="_blank" href="/user/equipment/detail/'+ equipment.id +'"><img src="'+ equipment.path +'" width="264" height="198"/></a></li>';
                 })
                 $("#equipmentFavorite").html(html);
             }
         });
-
-
-
-
 
     })
 

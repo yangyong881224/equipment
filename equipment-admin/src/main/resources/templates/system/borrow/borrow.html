@@ -20,21 +20,21 @@
                             </li>
                             <li class="select-time">
                                 <label>借用日期：</label>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreatedAt]"/>
+                                <input type="text" class="time-input"  placeholder="开始时间" name="params[beginCreatedAt]"/>
                                 <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreatedAt]"/>
+                                <input type="text" class="time-input" placeholder="结束时间" name="params[endCreatedAt]"/>
                             </li>
                             <li class="select-time">
                                 <label>归还日期：</label>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginReturnAt]"/>
+                                <input type="text" class="time-input" placeholder="开始时间" name="params[beginReturnAt]"/>
                                 <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endReturnAt]"/>
+                                <input type="text" class="time-input" placeholder="结束时间" name="params[endReturnAt]"/>
                             </li>
                             <li class="select-time">
                                 <label>审批时间：</label>
-                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginExamineAt]"/>
+                                <input type="text" class="time-input"  placeholder="开始时间" name="params[beginExamineAt]"/>
                                 <span>-</span>
-                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endExamineAt]"/>
+                                <input type="text" class="time-input" placeholder="结束时间" name="params[endExamineAt]"/>
                             </li>
                             <li>
                                 <label>审批人：</label>
@@ -91,7 +91,15 @@
                 },
                 {
                     field: 'returnAt',
-                    title: '归还日期'
+                    title: '归还日期',
+                    formatter: function(value, row, index) {
+                        console.log(row)
+                        if(row.overtime){
+                            return '<span style="color:red")>'+value+'</span>'
+                        }else{
+                            return '<span style="color:green")>'+value+'</span>';
+                        }
+                    }
                 },
                 {
                     field: 'examineAt',
@@ -118,7 +126,7 @@
                     }
                 },
                     {
-                        field: 'examine_flag',
+                        field: 'examineFlag',
                         title: '审批状态',
                         align: 'center',
                         formatter: function(value, row, index) {
@@ -136,7 +144,7 @@
                         }
                     },
                     {
-                        field: 'urge_return',
+                        field: 'urgeReturn',
                         title: '是否催还',
                         align: 'center',
                         formatter: function(value, row, index) {
@@ -149,7 +157,7 @@
 
                     },
                     {
-                        field: 'flag',
+                        field: 'realReturnAt',
                         title: '实际归还时间'
                     },
                 {
@@ -157,16 +165,17 @@
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];//todo 这里需要加判断条件
-                        if(row.flag == 0){
-                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>同意借用</a> ');
-                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-remove"></i>拒绝借用</a>');
-                        }else if(row.flag == 1){
-                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-remove"></i>催还</a>');
-                        }else if(row.flag == 2){
-                            actions.push('<a class="btn btn-success btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>同意归还</a>');
-                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-remove"></i>驳回归还</a>');
+                        if(row.flag == 0 && row.examineFlag == 0){
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否确认借用\', \''+ row.id +'\',1)"><i class="fa fa-edit"></i>同意借用</a> ');
+                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否确认拒绝\',\''+ row.id +'\',2)"><i class="fa fa-remove"></i>拒绝借用</a>');
+                        }else if(row.flag == 1 && row.urgeReturn == 0){
+                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否确认催还\', \''+ row.id +'\',5)"><i class="fa fa-remove"></i>催还</a>');
+                        }else if(row.flag == 2 && row.examineFlag == 1){
+                            actions.push('<a class="btn btn-success btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否同意归还\', \''+ row.id +'\',3)"><i class="fa fa-edit"></i>同意归还</a>');
+                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否驳回归还\', \''+ row.id +'\',4)"><i class="fa fa-remove"></i>驳回归还</a>');
+                        }else {
+                            actions.push('已完成');
                         }
-
                         return actions.join('');
                     }
                 }]
@@ -174,5 +183,31 @@
             $.table.init(options);
         });
     </script>
+<script type="application/javascript">
+    function agreeBorrow(tips,id, type){
+        var urgeReturn = null;
+        var examineFlag = null;
+        if(type == 5){
+            urgeReturn = 1;
+        }else{
+            examineFlag = type;
+        }
+        $.modal.confirm(tips,function(){
+            $.ajax({
+                type: "put",
+                url: "/system/borrow/examine",
+                data: {
+                    id:id,
+                    examineFlag:examineFlag,
+                    urgeReturn:urgeReturn
+                },
+                success: function(data) {
+                    $.table.refresh();
+                }
+            });
+        })
+    }
+
+</script>
 </body>
 </html>

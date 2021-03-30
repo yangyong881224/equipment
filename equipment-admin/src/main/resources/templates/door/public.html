@@ -9,6 +9,7 @@
 <script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
 <script src="../../static/js/jquery.kinMaxShow-1.0.src.js" th:src="@{/js/jquery.kinMaxShow-1.0.src.js}"></script>
 <script src="../../static/js/signformchange.js" th:src="@{/js/signformchange.js}"></script>
+
 </head>
 
 <body>
@@ -31,12 +32,12 @@
             <div class="navList">
                 <ul>
                     <li><a href="/user/index">网站首页</a></li>
-                    <li><a href="about.html">关于我们</a></li>
+                    <li><a href="about.html">XXXX</a></li>
                     <li><a href="/user/notice/2">消息中心</a></li>
                     <li><a href="/user/equipment">产品展示</a></li>
-                    <li><a href="equipment.html">案例展示</a></li>
-                    <li><a href="messages.html">在线留言</a></li>
-                    <li><a href="contact.html">联系我们</a></li>
+                    <li><a href="equipment.html">XXXX</a></li>
+                    <li><a th:if="${user != null}" href="/user/borrow">我的借用</a> <a th:if="${user == null}" href="javascript:login()">我的借用</a></li>
+                    <li><a href="contact.html">XXXX</a></li>
                 </ul>
             </div>
         </div>

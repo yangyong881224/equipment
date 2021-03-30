@@ -1,15 +1,17 @@
 package com.equipment.web.controller.system;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import com.equipment.common.utils.ShiroUtils;
+import com.equipment.system.enums.BorrowExamineFlagEnum;
+import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.equipment.common.annotation.Log;
 import com.equipment.common.enums.BusinessType;
 import com.equipment.system.domain.Borrow;
@@ -105,10 +107,18 @@ public class BorrowController extends BaseController
      */
     @RequiresPermissions("system:borrow:edit")
     @Log(title = "借用管理", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
+    @PutMapping("/examine")
     @ResponseBody
     public AjaxResult editSave(Borrow borrow)
     {
+        borrow.setExamineAt(new Date());
+        borrow.setSysUserId(ShiroUtils.getUserId());
+        borrow.setSysUserName(ShiroUtils.getSysUser().getUserName());
+        if(BorrowExamineFlagEnum.AGREE_BORROW.getCode().equals(borrow.getExamineFlag())){
+            borrow.setFlag(1);
+        }else if(BorrowExamineFlagEnum.AGREE_RETURN_BACK.getCode().equals(borrow.getExamineFlag()) ){
+            borrow.setFlag(3);
+        }
         return toAjax(borrowService.updateBorrow(borrow));
     }
 

@@ -42,7 +42,7 @@ public class UserLoginController extends BaseController {
     @GetMapping("/logout")
     public String logout(){
         ShiroUtils.logout();
-        return "/door/index";
+        return "redirect:/user/index";
     }
 
 

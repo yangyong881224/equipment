@@ -13,7 +13,7 @@ public enum BorrowExamineFlagEnum {
     AGREE_RETURN_BACK(3, "同意归还"),
     REFUSE_RETURN_BACK(4, "拒绝归还");
 
-    private int code;
+    private Integer code;
     private String desc;
 
     BorrowExamineFlagEnum(int code, String desc){
@@ -21,7 +21,7 @@ public enum BorrowExamineFlagEnum {
         this.desc = desc;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
