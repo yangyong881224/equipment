@@ -77,7 +77,7 @@ public class UserBorrowController extends BaseController {
             List<Borrow> borrowList = borrowService.selectOverdueList(borrow);
             return getDataTable(borrowList.stream().map(b ->{
                 BorrowVO vo = new BorrowVO();
-                BeanUtils.copyProperties(b,borrowVO);
+                BeanUtils.copyProperties(b,vo);
                 return vo;
             }).collect(Collectors.toList()));
         }else if(BorrowUserStatus.BORROW_EXAMINE.name().equals(borrowVO.getUserStatus())){
@@ -89,7 +89,7 @@ public class UserBorrowController extends BaseController {
             List<Borrow> borrowList = borrowService.selectRefuseList(borrow);
             return getDataTable(borrowList.stream().map(b ->{
                 BorrowVO vo = new BorrowVO();
-                BeanUtils.copyProperties(b,borrowVO);
+                BeanUtils.copyProperties(b,vo);
                 return vo;
             }).collect(Collectors.toList()));
         }else{
@@ -99,7 +99,7 @@ public class UserBorrowController extends BaseController {
 
         return getDataTable(borrowList.stream().map(b ->{
             BorrowVO vo = new BorrowVO();
-            BeanUtils.copyProperties(b,borrowVO);
+            BeanUtils.copyProperties(b,vo);
             return vo;
         }).collect(Collectors.toList()));
     }

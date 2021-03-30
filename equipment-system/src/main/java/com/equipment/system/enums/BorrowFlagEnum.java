@@ -12,15 +12,15 @@ public enum BorrowFlagEnum {
     WAIT_RETURN_EXAMINE(2, "等待归还审批"),
     RETURN_BACK(3, "已归还");
 
-    private int code;
+    private Integer code;
     private String desc;
 
-    BorrowFlagEnum(int code, String desc){
+    BorrowFlagEnum(Integer code, String desc){
         this.code = code;
         this.desc = desc;
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 

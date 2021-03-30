@@ -116,7 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectOverdueList" parameterType="Borrow" resultMap="BorrowResult">
         <include refid="selectBorrowVo"/>
-        where user_id = #{userId} and return_at.before(now())
+        where user_id = #{userId} and #{return_at} > return_at
     </select>
 
     <select id="selectRefunsList" parameterType="Borrow" resultMap="BorrowResult">

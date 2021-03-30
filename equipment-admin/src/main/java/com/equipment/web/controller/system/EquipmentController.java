@@ -9,10 +9,10 @@ import com.equipment.common.utils.ShiroUtils;
 import com.equipment.common.utils.file.FileUploadUtils;
 import com.equipment.system.domain.EquipmentType;
 import com.equipment.system.service.IEquipmentTypeService;
-import com.equipment.web.controller.converter.EquipmentVOConverter;
 import com.equipment.web.controller.vo.EquipmentVO;
 import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -45,9 +45,6 @@ public class EquipmentController extends BaseController
 
     @Autowired
     private IEquipmentTypeService equipmentTypeService;
-
-    @Autowired
-    private EquipmentVOConverter equipmentVOConverter;
 
     @RequiresPermissions("system:equipment:view")
     @GetMapping()
@@ -100,7 +97,8 @@ public class EquipmentController extends BaseController
         //对比拼接
         equipmentList.stream().forEach(equipment -> {
             EquipmentType equipmentType = equipmentTypeList.stream().filter(type -> type.getId().equals(equipment.getTypeId())).findFirst().orElse(null);
-            EquipmentVO equipmentVO = equipmentVOConverter.equipment2VO(equipment);
+            EquipmentVO equipmentVO = new EquipmentVO();
+            BeanUtils.copyProperties(equipment,equipmentVO);
             if(equipmentType != null){
                 equipmentVO.setTypeName(equipmentType.getTypeName());
             }

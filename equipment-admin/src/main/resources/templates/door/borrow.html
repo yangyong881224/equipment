@@ -52,11 +52,16 @@
 </div>
 <!--内页详情结束-->
 <script type="application/javascript">
+
     var pageNo = 1;
     var pageSize = 20;
     var userStatus = "BORROW_APPLY";
     paging(userStatus);
     function paging(status){
+        if([[${user==null}]]){
+            login();
+            return;
+        }
         userStatus = status;
         $.ajax({
             type: "get",
@@ -69,6 +74,7 @@
             success: function(data) {
                 var html = "";
                 data.rows.forEach(function(borrow, index){
+                    var realReturnAt = borrow.realReturnAt == null?"-":borrow.realReturnAt;
                     html += '<tr>';
                     html += '<td>'+ borrow.equipmentName +'</td>';
                     html += '<td>'+ borrow.createdAt +'</td>';
@@ -88,11 +94,14 @@
                     }else{
                         html += '<td>状态异常</td>';
                     }
-                    html += '<td>'+ borrow.realReturnAt +'</td>';
+                    html += '<td>'+ realReturnAt +'</td>';
                     html += '<td><button>提交</button></td>';
                     html += '</tr>';
                 })
                 $("#tbody").html(html);
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+				login();
             }
         });
     }

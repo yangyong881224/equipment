@@ -1,6 +1,11 @@
 package com.equipment.system.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import com.equipment.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.equipment.system.mapper.BorrowMapper;
@@ -99,6 +104,11 @@ public class BorrowServiceImpl implements IBorrowService
 
     @Override
     public List<Borrow> selectRefuseList(Borrow borrow) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            borrow.setReturnAt(sdf.parse(sdf.format(new Date())));
+        } catch (ParseException e) {
+        }
         return borrowMapper.selectRefunsList(borrow);
     }
 }

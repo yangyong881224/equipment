@@ -198,17 +198,18 @@ public class BorrowVO extends BaseEntity implements Serializable {
     }
 
     public String getUserStatus() {
-        if(flag==BorrowFlagEnum.WAIT_BORROW_EXAMINE.getCode() && examineFlag == BorrowExamineFlagEnum.NOT_EXAMINE.getCode()){
+
+        if(BorrowFlagEnum.WAIT_BORROW_EXAMINE.getCode().equals(flag) && BorrowExamineFlagEnum.NOT_EXAMINE.getCode().equals(examineFlag)){
             userStatus = BorrowUserStatus.BORROW_APPLY.name();
-        }else if(flag == BorrowFlagEnum.BORROWING.getCode()){
+        }else if(BorrowFlagEnum.BORROWING.getCode().equals(flag)){
             userStatus = BorrowUserStatus.BORROW_NOW.name();
-        }else if(returnAt.compareTo(new Date())<1){
+        }else if(returnAt !=null && new Date().compareTo(returnAt) > 0){
             userStatus = BorrowUserStatus.BORROW_OVERDUE.name();
-        } else if(flag==BorrowFlagEnum.WAIT_RETURN_EXAMINE.getCode() && examineFlag == BorrowExamineFlagEnum.NOT_EXAMINE.getCode()){
+        } else if(BorrowFlagEnum.WAIT_RETURN_EXAMINE.getCode().equals(flag) && BorrowExamineFlagEnum.NOT_EXAMINE.getCode().equals(examineFlag)){
             userStatus = BorrowUserStatus.BORROW_EXAMINE.name();
-        } else if(flag == BorrowFlagEnum.RETURN_BACK.getCode() && examineFlag == BorrowExamineFlagEnum.AGREE_RETURN_BACK.getCode()){
+        } else if(BorrowFlagEnum.RETURN_BACK.getCode().equals(flag) && BorrowExamineFlagEnum.AGREE_RETURN_BACK.getCode().equals(examineFlag)){
             userStatus = BorrowUserStatus.BORROW_HISTORY.name();
-        } else if(examineFlag == BorrowExamineFlagEnum.REFUSE_BORROW.getCode() || examineFlag == BorrowExamineFlagEnum.REFUSE_RETURN_BACK.getCode()){
+        } else if(BorrowExamineFlagEnum.REFUSE_BORROW.getCode().equals(examineFlag) || BorrowExamineFlagEnum.REFUSE_RETURN_BACK.getCode().equals(examineFlag)){
             userStatus = BorrowUserStatus.BORROW_REFUSE.name();
         }
         return userStatus;
