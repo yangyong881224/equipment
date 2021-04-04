@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('统计管理')" />
+</head>
+<body class="gray-bg">
+<div class="row  border-bottom white-bg dashboard-header">
+    <div class="col-sm-12">
+        <a class="btn btn-warning" onclick="exportExcel()">
+            <i class="fa fa-download"></i> 导出统计报表
+        </a>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>设备借用</h5>
+                    <div class="ibox-tools">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="echarts" id="echarts-bar-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>常用设备</h5>
+                    <div class="ibox-tools">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="echarts" id="echarts-pie-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>归还统计</h5>
+                    <div class="ibox-tools">
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="echarts" id="echarts-line-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: echarts-js" />
+<script type="text/javascript">
+    $(function () {
+        //查询设备如期归还开始
+        $.ajax({
+            type: "get",
+            url: "/system/statistics/return_statistics",
+            data: {},
+            success: function(data) {
+                var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
+                var lineoption = {
+                    title : {
+                        text: '本周设备归还'
+                    },
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['超时归还','如期归还']
+                    },
+                    grid:{
+                        x:40,
+                        x2:40,
+                        y2:24
+                    },
+                    calculable : true,
+                    xAxis : [
+                        {
+                            type : 'category',
+                            boundaryGap : false,
+                            data : data.weeks
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value',
+                            axisLabel : {
+                                formatter: '{value} 件'
+                            }
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'超时归还',
+                            type:'line',
+                            data:data.overTimeReturns,
+                            markPoint : {
+                                data : []
+                            },
+                            markLine : {
+                                data : [
+                                    {type : 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+                        {
+                            name:'如期归还',
+                            type:'line',
+                            data:data.inTimeReturns,
+                            markPoint : {
+                                data : []
+                            },
+                            markLine : {
+                                data : [
+                                    {type : 'average', name : '平均值'}
+                                ]
+                            }
+                        }
+                    ]
+                };
+                lineChart.setOption(lineoption);
+                $(window).resize(lineChart.resize);
+            }
+        });//查询设备如期归还结束
+
+
+
+        //查询本周设备借用和审核情况开始
+        $.ajax({
+            type: "get",
+            url: "/system/statistics/borrow_and_examine",
+            data: {},
+            success: function(data) {
+                var barChart = echarts.init(document.getElementById("echarts-bar-chart"));
+                var baroption = {
+                    title : {
+                        text: '本周设备借用量和审批量'
+                    },
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['借用量','同意量','拒绝量']
+                    },
+                    grid:{
+                        x:30,
+                        x2:40,
+                        y2:24
+                    },
+                    calculable : true,
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : data.weeks
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'借用量',
+                            type:'bar',
+                            data:data.borrows,
+                            markPoint : {
+                                data : [
+                                    {type : 'max', name: '最大值'},
+                                    {type : 'min', name: '最小值'}
+                                ]
+                            },
+                            markLine : {
+                                data : [
+                                    {type : 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+                        {
+                            name:'同意量',
+                            type:'bar',
+                            data:data.agrees,
+                            markLine : {
+                                data : [
+                                    {type : 'average', name : '平均值'}
+                                ]
+                            }
+                        },{
+                            name:'拒绝量',
+                            type:'bar',
+                            data:data.refuses,
+                            markLine : {
+                                data : [
+                                    {type : 'average', name : '平均值'}
+                                ]
+                            }
+                        }
+
+                    ]
+                };
+                barChart.setOption(baroption);
+
+                window.onresize = barChart.resize;
+            }
+        });//查询本周设备借用和审核情况结束
+
+
+        //查询本周借用量前五的设备
+        $.ajax({
+            type: "get",
+            url: "/system/statistics/favorite_equipment",
+            data: {},
+            success: function(data) {
+                var pieChart = echarts.init(document.getElementById("echarts-pie-chart"));
+                var pieoption = {
+                    title : {
+                        text: '本周设备借用率',
+                        subtext: '最高显示前五',
+                        x:'center'
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient : 'vertical',
+                        x : 'left',
+                        data:data.legendData
+                    },
+                    calculable : true,
+                    series : [
+                        {
+                            name:'访问来源',
+                            type:'pie',
+                            radius : '55%',
+                            center: ['50%', '60%'],
+                            data:data.seriesData
+                        }
+                    ]
+                };
+                pieChart.setOption(pieoption);
+                $(window).resize(pieChart.resize);
+            }
+        });
+    });
+
+
+    //导出统计报表
+    function exportExcel(){
+        $.modal.confirm("确定导出统计报表吗？", function() {
+            $.ajax({
+                type: "post",
+                url: "/system/statistics/export",
+                data: {},
+                success: function(result) {
+                    if (result.code == web_status.SUCCESS) {
+                        window.location.href = ctx + "common/download?fileName=" + encodeURI(result.msg) + "&delete=" + true;
+                    } else if (result.code == web_status.WARNING) {
+                        $.modal.alertWarning(result.msg)
+                    } else {
+                        $.modal.alertError(result.msg);
+                    }
+                    $.modal.closeLoading();
+                }
+            });
+        });
+    }
+</script>
+</body>
+</html>

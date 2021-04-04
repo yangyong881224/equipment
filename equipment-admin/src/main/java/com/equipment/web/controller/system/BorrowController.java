@@ -7,6 +7,7 @@ import java.util.Map;
 import com.equipment.common.utils.ShiroUtils;
 import com.equipment.system.enums.BorrowExamineFlagEnum;
 import com.equipment.system.enums.BorrowFlagEnum;
+import com.equipment.system.service.IEquipmentService;
 import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class BorrowController extends BaseController
 
     @Autowired
     private IBorrowService borrowService;
+
+    @Autowired
+    private IEquipmentService equipmentService;
 
     @RequiresPermissions("system:borrow:view")
     @GetMapping()
@@ -112,13 +116,18 @@ public class BorrowController extends BaseController
     @ResponseBody
     public AjaxResult editSave(Borrow borrow)
     {
-        borrow.setExamineAt(new Date());
         borrow.setSysUserId(ShiroUtils.getUserId());
         borrow.setSysUserName(ShiroUtils.getSysUser().getUserName());
         if(BorrowExamineFlagEnum.AGREE_BORROW.getCode().equals(borrow.getExamineFlag())){
+            borrow.setExamineAt(new Date());
             borrow.setFlag(BorrowFlagEnum.BORROWING.getCode());
+            //借用数量-1，被借次数+1
+//            equipmentService.borrow
+        }else if(BorrowExamineFlagEnum.REFUSE_BORROW.getCode().equals(borrow.getExamineFlag())){
+            borrow.setExamineAt(new Date());
         }else if(BorrowExamineFlagEnum.AGREE_RETURN_BACK.getCode().equals(borrow.getExamineFlag()) ){
             borrow.setFlag(BorrowFlagEnum.RETURN_BACK.getCode());
+            borrow.setRealReturnAt(new Date());
         } else if(BorrowExamineFlagEnum.REFUSE_RETURN_BACK.getCode().equals(borrow.getExamineFlag())){
             borrow.setFlag(BorrowFlagEnum.BORROWING.getCode());
         }

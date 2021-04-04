@@ -63,6 +63,8 @@ public class UserLoginController extends BaseController {
         if (UserConstants.USER_NAME_NOT_UNIQUE.equals(userService.checkLoginNameUnique(user.getLoginName()))){
             return error("注册用户'" + user.getLoginName() + "'失败，账号已存在");
         }
+        user.setSex("0");
+        user.setUserName("白白胖胖");
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));
         user.setCreateBy("SELF");

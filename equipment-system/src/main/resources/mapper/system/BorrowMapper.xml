@@ -21,6 +21,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="realReturnAt"    column="real_return_at"    />
     </resultMap>
 
+    <resultMap id="BorrowAndExamineVOMap" type="com.equipment.system.vo.BorrowAndExamineVO">
+        <result property="groupDate" column="group_date"/>
+        <result property="borrowCount" column="borrow_count"/>
+        <result property="agreeCount" column="agree_count"/>
+        <result property="refuseCount" column="refuse_count"/>
+    </resultMap>
+
+    <resultMap id="FavoriteEquipmentVOMap" type="com.equipment.system.vo.FavoriteEquipmentVO">
+        <result property="value" column="value"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
     <sql id="selectBorrowVo">
         select id, user_id, user_name, equipment_id, equipment_name, created_at, return_at, examine_at, sys_user_id, sys_user_name, flag, examine_flag, urge_return, real_return_at from borrow
     </sql>
@@ -122,6 +134,59 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectRefunsList" parameterType="Borrow" resultMap="BorrowResult">
         <include refid="selectBorrowVo"/>
         where user_id = #{userId} and (examine_flag = 2 or examine_flag = 4)
+    </select>
+    
+    <select id="borrowWeekCount" parameterType="Map" resultMap="BorrowAndExamineVOMap">
+        SELECT COUNT(id) as borrow_count,created_at as group_date FROM `borrow`
+
+        WHERE created_at >= #{firstDayOfWeek}
+
+         GROUP BY group_date
+    </select>
+
+    <select id="agreeWeekCount" parameterType="Map" resultMap="BorrowAndExamineVOMap">
+        SELECT COUNT(id) as agree_count,DATE_FORMAT(examine_at,'%Y-%m-%d') AS group_date FROM borrow
+
+        WHERE examine_flag!=0 AND examine_flag!=2 AND examine_at >= #{firstDayOfWeek}
+
+        GROUP BY group_date
+    </select>
+
+    <select id="refuseWeekCount" parameterType="Map" resultMap="BorrowAndExamineVOMap">
+        SELECT COUNT(id) as refuse_count,DATE_FORMAT(examine_at,'%Y-%m-%d') AS group_date FROM borrow
+
+        WHERE (examine_flag=0 OR examine_flag=2) AND examine_at >= #{firstDayOfWeek}
+
+        GROUP BY group_date
+    </select>
+
+    <select id="favoriteEquipment" parameterType="Map" resultMap="FavoriteEquipmentVOMap">
+        SELECT COUNT(b.id) as `value`,e.name as `name` FROM `borrow` as b
+
+        LEFT JOIN equipment as e
+
+            ON b.equipment_id = e.id
+
+        WHERE b.created_at >= #{firstDayOfWeek}
+
+        GROUP BY b.equipment_id
+
+        LIMIT 5
+    </select>
+    
+    <select id="inTimeReturn" parameterType="Map" resultMap="BorrowAndExamineVOMap">
+        SELECT COUNT(id) AS borrow_count,DATE_FORMAT(return_at,'%Y-%m-%d') AS `group_date` FROM borrow
+
+        WHERE flag = 3 AND return_at >=DATE_FORMAT(real_return_at,'%Y-%m-%d') AND return_at >= #{firstDayOfWeek}
+
+        GROUP BY `group_date`
+    </select>
+
+    <select id="overTimeReturn" parameterType="Map" resultMap="BorrowAndExamineVOMap">
+        SELECT COUNT(id) AS borrow_count,DATE_FORMAT(return_at,'%Y-%m-%d') AS `group_date` FROM borrow
+
+        WHERE  DATE_FORMAT(real_return_at,'%Y-%m-%d') > return_at or DATE_FORMAT(now(),'%Y-%m-%d') > return_at AND return_at >= #{firstDayOfWeek}
+        GROUP BY `group_date`
     </select>
 
 </mapper>

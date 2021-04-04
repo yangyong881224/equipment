@@ -1,7 +1,11 @@
 package com.equipment.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.equipment.system.domain.Borrow;
+import com.equipment.system.vo.BorrowAndExamineVO;
+import com.equipment.system.vo.FavoriteEquipmentVO;
 
 /**
  * 借用管理Mapper接口
@@ -62,4 +66,15 @@ public interface BorrowMapper
     List<Borrow> selectOverdueList(Borrow borrow);
 
     List<Borrow> selectRefunsList(Borrow borrow);
+
+    public List<BorrowAndExamineVO> borrowWeekCount(Map<String,Object> params);
+    public List<BorrowAndExamineVO> agreeWeekCount(Map<String,Object> params);
+    public List<BorrowAndExamineVO> refuseWeekCount(Map<String,Object> params);
+
+    List<FavoriteEquipmentVO> favoriteEquipment(Map<String,Object> params);
+
+    List<BorrowAndExamineVO> inTimeReturn(Map<String,Object> params);
+
+    List<BorrowAndExamineVO> overTimeReturn(Map<String,Object> params);
+
 }

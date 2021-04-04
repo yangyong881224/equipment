@@ -7,7 +7,7 @@ equipment:
   # 版权年份
   copyrightYear: 2021
   # 实例演示开关
-  demoEnabled: false
+  demoEnabled: true
   # 文件路径 示例（ Windows配置D:/equipment/uploadPath，Linux配置 /home/equipment/uploadPath）
   profile: D:/equipment/uploadPath
   # 获取ip地址开关

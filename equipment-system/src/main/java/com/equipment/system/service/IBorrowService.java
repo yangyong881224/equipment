@@ -1,7 +1,9 @@
 package com.equipment.system.service;
 
-import java.util.List;
 import com.equipment.system.domain.Borrow;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 借用管理Service接口
@@ -62,4 +64,11 @@ public interface IBorrowService
     List<Borrow> selectOverdueList(Borrow borrow);
 
     List<Borrow> selectRefuseList(Borrow borrow);
+
+    Map<String, String[]> borrowAndExamineStatistics();
+
+    Map<String,Object> favoriteEquipment();
+
+    Map<String,Object> returnStatistics();
+
 }
