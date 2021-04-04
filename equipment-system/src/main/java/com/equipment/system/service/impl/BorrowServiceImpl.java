@@ -1,17 +1,16 @@
 package com.equipment.system.service.impl;
 
+import com.equipment.common.core.text.Convert;
+import com.equipment.system.domain.Borrow;
+import com.equipment.system.mapper.BorrowMapper;
+import com.equipment.system.service.IBorrowService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import com.equipment.common.utils.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.equipment.system.mapper.BorrowMapper;
-import com.equipment.system.domain.Borrow;
-import com.equipment.system.service.IBorrowService;
-import com.equipment.common.core.text.Convert;
 
 /**
  * 借用管理Service业务层处理
@@ -20,7 +19,7 @@ import com.equipment.common.core.text.Convert;
  * @date 2021-02-28
  */
 @Service
-public class BorrowServiceImpl implements IBorrowService 
+public class BorrowServiceImpl implements IBorrowService
 {
     @Autowired
     private BorrowMapper borrowMapper;
@@ -99,16 +98,16 @@ public class BorrowServiceImpl implements IBorrowService
 
     @Override
     public List<Borrow> selectOverdueList(Borrow borrow) {
-        return borrowMapper.selectOverdueList(borrow);
-    }
-
-    @Override
-    public List<Borrow> selectRefuseList(Borrow borrow) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             borrow.setReturnAt(sdf.parse(sdf.format(new Date())));
         } catch (ParseException e) {
         }
+        return borrowMapper.selectOverdueList(borrow);
+    }
+
+    @Override
+    public List<Borrow> selectRefuseList(Borrow borrow) {
         return borrowMapper.selectRefunsList(borrow);
     }
 }

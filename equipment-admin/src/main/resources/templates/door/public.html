@@ -37,7 +37,7 @@
                     <li><a href="/user/equipment">产品展示</a></li>
                     <li><a href="equipment.html">XXXX</a></li>
                     <li><a th:if="${user != null}" href="/user/borrow">我的借用</a> <a th:if="${user == null}" href="javascript:login()">我的借用</a></li>
-                    <li><a href="contact.html">XXXX</a></li>
+                    <li><a th:if="${user != null}" href="/user/user_center">个人中心</a> <a th:if="${user == null}" href="javascript:login()">个人中心</a></li>
                 </ul>
             </div>
         </div>
@@ -66,7 +66,7 @@
         </div>
         <br>
         <div class="change" style="color: #4d4d4d">
-            <p>还没有账号?赶快<a href="#" style="text-decoration: none;color: #43A047">注册</a>一个吧</p>
+            <p>还没有账号?赶快<a href="javascript:void(0)" style="text-decoration: none;color: #43A047">注册</a>一个吧</p>
         </div>
     </div>
     <div class="signform" id="registerform" style="display: none">
@@ -74,21 +74,24 @@
             <p onclick="signclose()" style="color: green;">X</p>
         </div>
         <div class="userdiv">
-            <input  id="registeruser" class="signinput" onblur="loading()" type="text" placeholder="用户名" name="user">
+            <input  id="registeruser" class="signinput" type="text" placeholder="用户名" name="user">
         </div>
         <!--<img src="image/signloading.gif" style="display: none" id="registerloading">-->
         <div class="pwddiv">
-            <input  id="registerpwd" class="signinput" type="password" placeholder="密码" name="pwd">
+            <input  id="registerpwd" class="signinput" type="password" placeholder="密码" name="pwd" onkeyup="comparePwd()">
         </div>
         <div class="pwddiv">
-            <input  id="registerrepwd" class="signinput" type="password" placeholder="再次输入密码" name="pwd">
+            <input  id="registerrepwd" class="signinput" type="password" placeholder="再次输入密码" name="pwd" onkeyup="comparePwd()">
+        </div>
+        <div class="pwddiv">
+            <span id="tag" style="color:red"></span>
         </div>
         <div class="postdiv">
-            <button>注册</button>
+            <button onclick="doRegist()">注册</button>
         </div>
         <br>
         <div class="change" style="color: #4d4d4d">
-            <p>已有账号?立刻去<a href="#" style="text-decoration: none;color: #43A047">登录</a>吧</p>
+            <p>已有账号?立刻去<a href="javascript:void(0)" style="text-decoration: none;color: #43A047">登录</a>吧</p>
         </div>
     </div>
     <!--底部开始-->

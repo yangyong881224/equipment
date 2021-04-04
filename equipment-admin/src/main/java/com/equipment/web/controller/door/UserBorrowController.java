@@ -1,6 +1,7 @@
 package com.equipment.web.controller.door;
 
 import com.equipment.common.core.controller.BaseController;
+import com.equipment.common.core.domain.AjaxResult;
 import com.equipment.common.core.page.TableDataInfo;
 import com.equipment.common.utils.ShiroUtils;
 import com.equipment.system.domain.Borrow;
@@ -48,7 +49,7 @@ public class UserBorrowController extends BaseController {
     @ResponseBody
     public boolean borrow(Borrow borrow){
         if(ShiroUtils.getSysUser() == null){
-            return false;
+            throw new RuntimeException("用户未登录");
         }
 
         borrow.setFlag(0);
@@ -102,6 +103,14 @@ public class UserBorrowController extends BaseController {
             BeanUtils.copyProperties(b,vo);
             return vo;
         }).collect(Collectors.toList()));
+    }
+
+
+    @GetMapping("/back")
+    @ResponseBody
+    public AjaxResult retunBack(Borrow borrow){
+        borrow.setFlag(BorrowFlagEnum.WAIT_RETURN_EXAMINE.getCode());
+        return toAjax(borrowService.updateBorrow(borrow));
     }
 
 

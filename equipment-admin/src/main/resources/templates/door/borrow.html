@@ -29,7 +29,7 @@
 	
 	<div class="n_right">
 		<div class="location">
-			当前所在位置：首页 >> 我的留言
+			当前所在位置：首页 >> 我的借用
 		</div>
 		<div class="n_centent">
             <table style="width:100%">
@@ -72,8 +72,13 @@
                 userStatus: userStatus
             },
             success: function(data) {
+                if(data.code == 500){
+					login();
+					return;
+                }
                 var html = "";
                 data.rows.forEach(function(borrow, index){
+
                     var realReturnAt = borrow.realReturnAt == null?"-":borrow.realReturnAt;
                     html += '<tr>';
                     html += '<td>'+ borrow.equipmentName +'</td>';
@@ -95,7 +100,21 @@
                         html += '<td>状态异常</td>';
                     }
                     html += '<td>'+ realReturnAt +'</td>';
-                    html += '<td><button>提交</button></td>';
+                    if(borrow.userStatus == "BORROW_APPLY"){
+                        html += '<td>-</td>';
+                    }else if(borrow.userStatus == "BORROW_NOW"){
+                        html += '<td><a href="javascript:returnBack('+ borrow.id +')">归还</a></td>';
+                    }else if(borrow.userStatus == "BORROW_OVERDUE"){
+                        html += '<td><a href="javascript:returnBack('+ borrow.id +')">归还</a></td>';
+                    }else if(borrow.userStatus == "BORROW_EXAMINE"){
+                        html += '<td>-</td>';
+                    }else if(borrow.userStatus == "BORROW_HISTORY"){
+                        html += '<td>-</td>';
+                    }else if(borrow.userStatus == "BORROW_REFUSE"){
+                        html += '<td>-</td>';
+                    }else{
+                        html += '<td>-</td>';
+                    }
                     html += '</tr>';
                 })
                 $("#tbody").html(html);
@@ -105,6 +124,25 @@
             }
         });
     }
+    function returnBack(id){
+        $.ajax({
+            type: "get",
+            url: "/user/borrow/back",
+            data: {
+                id:id
+			},
+            success: function (data) {
+				if(data.code == 500){
+					login();
+				}else{
+                    location.replace(location);
+				}
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                login();
+            }
+        })
+	}
 
 </script>
 </body>

@@ -132,7 +132,7 @@ public class BorrowVO extends BaseEntity implements Serializable {
 
     public void setReturnAt(Date returnAt) {
         this.returnAt = returnAt;
-        if(this.returnAt.compareTo(new Date()) <= 0){
+        if(this.returnAt.compareTo(new Date()) <= 0 && BorrowFlagEnum.BORROWING.getCode().equals(flag)){
             this.overtime = true;
         }
     }
@@ -203,9 +203,9 @@ public class BorrowVO extends BaseEntity implements Serializable {
             userStatus = BorrowUserStatus.BORROW_APPLY.name();
         }else if(BorrowFlagEnum.BORROWING.getCode().equals(flag)){
             userStatus = BorrowUserStatus.BORROW_NOW.name();
-        }else if(returnAt !=null && new Date().compareTo(returnAt) > 0){
+        }else if(returnAt !=null && new Date().compareTo(returnAt) > 0 && BorrowFlagEnum.BORROWING.getCode().equals(flag)){
             userStatus = BorrowUserStatus.BORROW_OVERDUE.name();
-        } else if(BorrowFlagEnum.WAIT_RETURN_EXAMINE.getCode().equals(flag) && BorrowExamineFlagEnum.NOT_EXAMINE.getCode().equals(examineFlag)){
+        } else if(BorrowFlagEnum.WAIT_RETURN_EXAMINE.getCode().equals(flag)){
             userStatus = BorrowUserStatus.BORROW_EXAMINE.name();
         } else if(BorrowFlagEnum.RETURN_BACK.getCode().equals(flag) && BorrowExamineFlagEnum.AGREE_RETURN_BACK.getCode().equals(examineFlag)){
             userStatus = BorrowUserStatus.BORROW_HISTORY.name();

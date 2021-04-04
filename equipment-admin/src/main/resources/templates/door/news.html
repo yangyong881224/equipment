@@ -84,12 +84,22 @@
                 pageSize:pageSize,
             },
             success: function(data) {
+                if(data.code == 500){
+                    login();
+				}
                 var html = "";
                 if(data.total > 0){
                     html += '<ul class="news_list2">';
                     data.rows.forEach(function(borrow, index){
-                        html += '<li> <span class="title"><a href="" style="color:#444;font-weight:bold;">'+ borrow.equipmentName +'——催还提醒</a></span><span class="hits"></span><br />';
-                        html += '<span class="time">应还时间：'+ borrow.returnAt +'</span>';
+                        html += '<li> <span class="title"><a href="" style="color:#444;font-weight:bold;">'+ borrow.equipmentName +'——催还提醒</a></span><span class="hits"></span>';
+                        if(borrow.flag == 1){
+                            html += '<span class="hits"><a href="javascript:returnBack('+ borrow.id +')">一键归还</a></span>';
+                        }else if(borrow.flag == 2){
+                            html += '<span class="hits">等待归还审批</span>';
+						}else{
+                            html += '<span class="hits">已经归还</span>';
+						}
+						html += '<br /><span class="time">应还时间：'+ borrow.returnAt +'</span>';
                     });
                     html += '</ul>'
                     if(pageNo != 1){
@@ -134,6 +144,26 @@
             noticePaging(noticeTypeId);
         }
 	});
+
+    function returnBack(id){
+        $.ajax({
+            type: "get",
+            url: "/user/borrow/back",
+            data: {
+                id:id
+            },
+            success: function (data) {
+                if(data.code == 500){
+                    login();
+                }else{
+                    location.replace(location);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                login();
+            }
+        })
+    }
 
 </script>
 </body>

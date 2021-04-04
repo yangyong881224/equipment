@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:include="/door/public :: header('首页')" />
+</head>
+<body>
+<div th:block th:insert="~{/door/public :: public_static}" ></div>
+<!--导航结束-->
+
+<!--内页详情开始-->
+<div class="n_Main">
+	<div class="n_left">
+		<div class="n_title">
+			<h3>个人中心</h3>
+			<p>USER CENTER</p>
+		</div>
+		<ul>
+			<li><a href="/user/user_center">基本信息</a></li>
+			<li><a href="/user/user_password">密码重置</a></li>
+		</ul>
+
+	</div>
+	
+	<div class="n_right">
+		<div class="location">
+			当前所在位置：首页 >> 个人中心
+		</div>
+		<div class="n_centent">
+			<form name="form" id="form">
+				<ul>
+					<li class="table_1">
+						<div>
+							<label>用户姓名：</label>
+							<input type="text" name="userName" id="userName" style="width:262px; height:30px; outline:none" th:value ="${user.userName}"/>
+						</div>
+					</li>
+					<li>
+						<div>
+							<label>性　　别：</label>
+							<input type="radio" value="0" th:field="${user.sex}" name="sex"/> 男 &nbsp;&nbsp;
+							<input type="radio" value="1" th:field="${user.sex}" name="sex"/> 女
+						</div>
+					</li>
+					<li>
+						<div>
+							<label>联系电话：</label>
+							<input type="text" id="phonenumber" name="phonenumber" style="width:262px; height:30px;outline:none" th:value ="${user.phonenumber}"/>
+						</div>
+					</li>
+					<li>
+						<div>
+							<label>电子邮箱：</label>
+							<input type="text" name="email" id="email" style="width:262px; height:30px;outline:none" th:value ="${user.email}"/>
+						</div>
+					</li>
+					<li>
+						<div class="tijiao1">
+							<a href="javascript:void(0);" onClick="cfm_msg();return false;" style="color:#fff;">确认修改</a>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</div>
+<!--内页详情结束-->
+
+<script type="text/javascript">
+
+function cfm_msg(){
+	var userName = $("#userName").val();
+	var email = $("#email").val();
+	var phonenumber = $("#phonenumber").val();
+	var sex = $("input[name='sex']:checked").val();
+
+	$.ajax({
+		type: "put",
+		url: "/user/user_center/update",
+		data: {
+			userName:userName,
+			email:email,
+			phonenumber:phonenumber,
+			sex:sex
+		},
+		success: function(r) {
+			if (r.code == 0) {
+				var url =  window.location.href;
+				url = url.replace("#","");
+				alert("修改成功");
+				location.replace(url);
+			}else {
+				alert(r.msg);
+			}
+		}
+	});
+}
+</script>	
+
+</body>
+</html>

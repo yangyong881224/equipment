@@ -67,8 +67,12 @@ public class UserNoticeController extends BaseController {
     @ResponseBody
     @GetMapping("/borrow_urge_paging")
     public TableDataInfo borrowUrgePaging(Integer pageNo, Integer pageSize){
+        if(ShiroUtils.getSysUser() == null){
+            throw new RuntimeException("用户未登录");
+        }
         PageHelper.startPage(pageNo, pageSize, "(now()-return_at) desc");
         Borrow borrow = new Borrow();
+        borrow.setUserId(ShiroUtils.getUserId());
         borrow.setUrgeReturn(1);
         List<Borrow> borrowList = borrowService.selectBorrowList(borrow);
         return getDataTable(borrowList);

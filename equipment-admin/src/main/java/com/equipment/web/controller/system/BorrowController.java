@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.equipment.common.utils.ShiroUtils;
 import com.equipment.system.enums.BorrowExamineFlagEnum;
+import com.equipment.system.enums.BorrowFlagEnum;
 import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,9 +116,11 @@ public class BorrowController extends BaseController
         borrow.setSysUserId(ShiroUtils.getUserId());
         borrow.setSysUserName(ShiroUtils.getSysUser().getUserName());
         if(BorrowExamineFlagEnum.AGREE_BORROW.getCode().equals(borrow.getExamineFlag())){
-            borrow.setFlag(1);
+            borrow.setFlag(BorrowFlagEnum.BORROWING.getCode());
         }else if(BorrowExamineFlagEnum.AGREE_RETURN_BACK.getCode().equals(borrow.getExamineFlag()) ){
-            borrow.setFlag(3);
+            borrow.setFlag(BorrowFlagEnum.RETURN_BACK.getCode());
+        } else if(BorrowExamineFlagEnum.REFUSE_RETURN_BACK.getCode().equals(borrow.getExamineFlag())){
+            borrow.setFlag(BorrowFlagEnum.BORROWING.getCode());
         }
         return toAjax(borrowService.updateBorrow(borrow));
     }
