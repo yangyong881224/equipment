@@ -98,7 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteEquipmentById" parameterType="Long">
-        delete from equipment where id = #{id}
+        update equipment set flag = 1 where id = #{id}
     </delete>
 
     <delete id="deleteEquipmentByIds" parameterType="String">
@@ -107,5 +107,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <update id="agreeBorrow" parameterType="Long">
+        update equipment set borrow_quantity=borrow_quantity+1 , borrow_num=borrow_num+1 where id=#{equipmentId}
+    </update>
+
+    <update id="agreeReturn" parameterType="Long">
+        update equipment set borrow_quantity=borrow_quantity-1 where id=#{equipmentId}
+    </update>
 
 </mapper>

@@ -122,12 +122,13 @@ public class BorrowController extends BaseController
             borrow.setExamineAt(new Date());
             borrow.setFlag(BorrowFlagEnum.BORROWING.getCode());
             //借用数量-1，被借次数+1
-//            equipmentService.borrow
+            equipmentService.agreeBorrow(borrow.getEquipmentId());
         }else if(BorrowExamineFlagEnum.REFUSE_BORROW.getCode().equals(borrow.getExamineFlag())){
             borrow.setExamineAt(new Date());
         }else if(BorrowExamineFlagEnum.AGREE_RETURN_BACK.getCode().equals(borrow.getExamineFlag()) ){
             borrow.setFlag(BorrowFlagEnum.RETURN_BACK.getCode());
             borrow.setRealReturnAt(new Date());
+            equipmentService.agreeReturn(borrow.getEquipmentId());
         } else if(BorrowExamineFlagEnum.REFUSE_RETURN_BACK.getCode().equals(borrow.getExamineFlag())){
             borrow.setFlag(BorrowFlagEnum.BORROWING.getCode());
         }

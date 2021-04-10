@@ -47,8 +47,10 @@ public class StatisticsServiceImpl implements IStatisticsService {
             statistics.setBorrowCount(equipment.getBorrowNum());
             EquipmentType type = equipmentTypeList.stream().filter(equipmentType -> equipment.getTypeId().equals(equipmentType.getId())).findFirst().orElse(new EquipmentType());
             statistics.setEquipmentType(type.getTypeName());
-//            Long overTimeCount = borrowMapper.selectOverTimeCountByEquipmentId(equipment.getId());
-//            Long urgeTimeCount = borrowMapper.selectUrgeCountByEquipmentId(equipment.getId());
+            Long overTimeCount = borrowMapper.selectOverTimeCountByEquipmentId(equipment.getId());
+            statistics.setOverTimeCount(overTimeCount);
+            Long urgeTimeCount = borrowMapper.selectUrgeCountByEquipmentId(equipment.getId());
+            statistics.setUrgeCount(urgeTimeCount);
             return statistics;
         }).collect(Collectors.toList());
         return statisticsList;

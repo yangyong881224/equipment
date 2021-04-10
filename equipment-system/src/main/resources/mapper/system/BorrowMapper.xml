@@ -189,4 +189,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         GROUP BY `group_date`
     </select>
 
+
+    <select id="selectOverTimeCountByEquipmentId" parameterType="Long" resultType="Long">
+        SELECT COUNT(id) FROM `borrow`
+        WHERE real_return_at > return_at
+           OR (real_return_at IS NULL AND now() > return_at)
+           AND equipment_id=#{equipmentId}
+    </select>
+
+    <select id="selectUrgeCountByEquipmentId" parameterType="Long" resultType="Long">
+        SELECT COUNT(id) FROM `borrow` WHERE urge_return = 1 AND equipment_id = #{equipmentId}
+    </select>
+
 </mapper>

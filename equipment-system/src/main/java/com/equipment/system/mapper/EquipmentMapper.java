@@ -58,4 +58,8 @@ public interface EquipmentMapper
      * @return 结果
      */
     public int deleteEquipmentByIds(String[] ids);
+
+    int agreeBorrow(Long equipmentId);
+
+    int agreeReturn(Long equipmentId);
 }

@@ -77,4 +77,7 @@ public interface BorrowMapper
 
     List<BorrowAndExamineVO> overTimeReturn(Map<String,Object> params);
 
+    Long selectOverTimeCountByEquipmentId(Long id);
+
+    Long selectUrgeCountByEquipmentId(Long id);
 }

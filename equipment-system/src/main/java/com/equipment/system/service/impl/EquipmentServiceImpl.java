@@ -91,4 +91,14 @@ public class EquipmentServiceImpl implements IEquipmentService
     {
         return equipmentMapper.deleteEquipmentById(id);
     }
+
+    @Override
+    public int agreeBorrow(Long equipmentId) {
+        return equipmentMapper.agreeBorrow(equipmentId);
+    }
+
+    @Override
+    public int agreeReturn(Long equipmentId) {
+        return equipmentMapper.agreeReturn(equipmentId);
+    }
 }

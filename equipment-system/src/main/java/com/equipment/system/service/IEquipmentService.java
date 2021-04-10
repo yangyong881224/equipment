@@ -58,4 +58,8 @@ public interface IEquipmentService
      * @return 结果
      */
     public int deleteEquipmentById(Long id);
+
+    int agreeBorrow(Long equipmentId);
+
+    int agreeReturn(Long equipmentId);
 }
