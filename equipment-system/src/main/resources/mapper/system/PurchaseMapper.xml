@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.equipment.system.mapper.PurchaseMapper">
+    
+    <resultMap type="Purchase" id="PurchaseResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createdAt"    column="created_at"    />
+        <result property="equipmentId"    column="equipment_id"    />
+    </resultMap>
+
+    <sql id="cols_all">
+        `id`, <include refid="cols"/>
+    </sql>
+
+    <sql id="cols">
+        `user_id`, `equipment_id`, `created_at`
+    </sql>
+
+    <sql id="cols_user">
+        <include refid="cols_all"/> , equipment_path, equipment_name, flag
+    </sql>
+
+    <!--查询-->
+    <select id="findByUserId" parameterType="Long" resultMap="PurchaseResult">
+        SELECT <include refid="cols_all"/> FROM `purchase_equipment` WHERE user_id = #{userId};
+    </select>
+
+    <!--创建-->
+    <insert id="create" parameterType="com.equipment.system.domain.Purchase">
+        insert into `purchase_equipment` (user_id, equipment_id, created_at) values(#{userId},#{equipmentId},now())
+    </insert>
+
+    <!--删除-->
+    <delete id="delete" parameterType="Long">
+        delete from `purchase_equipment` where id = #{id}
+    </delete>
+    
+
+
+
+</mapper>

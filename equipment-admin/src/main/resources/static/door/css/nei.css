@@ -87,7 +87,7 @@
 
 /**案例**/
 .n_centent ul.alMain{overflow:hidden;}
-.n_centent ul.alMain li {width: 240px;height: 165px;background: url(../images/2.jpg) no-repeat;float: left;margin: 16px 32px; margin-bottom:25px;}
+.n_centent ul.alMain li {width: 240px;height: 165px;background: url(..) no-repeat;float: left;margin: 16px 32px; margin-bottom:25px;}
 .n_centent ul.alMain li a{color:#666; text-decoration:none;}
 .n_centent ul.alMain li p{text-align:center;}
 .alMain li img{padding-left: 9px; padding-top: 8px; margin-bottom:10px;}

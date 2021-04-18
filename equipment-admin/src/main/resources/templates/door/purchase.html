@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:include="/door/public :: header('消息详情')" />
+
+</head>
+<body>
+<div th:block th:insert="~{/door/public :: public_static}" ></div>
+
+<!--内页详情开始-->
+<div class="n_Main">
+	<div class="n_left">
+		<div class="n_title">
+			<h3>我的清单</h3>
+			<p>MY PURCHASE</p>
+		</div>
+		
+	</div>
+	
+	<div class="n_right">
+		<div class="location">
+			当前所在位置：首页 >> 我的清单
+		</div>
+		<div class="n_centent">
+			　　<div class="subCont">
+						<ul class="news_list2">
+    						<li> <span class="title"><a href="xiangxi.html" style="color:#444;font-weight:bold;">新闻名称</a></span><span class="hits">点击次数：2000</span><br />
+                                <span class="time">2016-07-23</span> <span class="class">分类：<a href="#">分类名称</a></span> </li>
+
+						</ul>
+					</div>
+		</div>
+	</div>
+</div>
+<!--内页详情结束-->
+
+<script type="application/javascript">
+
+    $.ajax({
+        type: "get",
+        url: "/user/purchase/list",
+        data: {
+
+        },
+        success: function(r) {
+            r.forEach(function(purchase, index){
+
+			})
+        }
+    });
+
+</script>
+</body>
+</html>

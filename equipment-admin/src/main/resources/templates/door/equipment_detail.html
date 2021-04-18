@@ -43,7 +43,7 @@
 				</div>
 				<div class="postdiv">
 					<button onclick="borrow()" style="width:140px">申请借用</button>
-					<button onclick="borrow()" style="width:140px">加入清单</button>
+					<button onclick="purchase()" style="width:140px">加入清单</button>
 				</div>
 				</div>
 			</div>
@@ -92,6 +92,24 @@
                 }else{
                     login();
 				}
+            }
+        });
+	}
+
+	function purchase(){
+        var equipmentId = $("#equipmentId").val();
+        $.ajax({
+            type: "post",
+            url: "/user/purchase/create",
+            data: {
+                equipmentId:equipmentId,
+            },
+            success: function(data) {
+                if(data == true){
+                    alert("加入清单成功");
+                }else{
+                    login();
+                }
             }
         });
 	}
