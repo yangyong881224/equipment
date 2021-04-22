@@ -62,4 +62,6 @@ public interface EquipmentMapper
     int agreeBorrow(Long equipmentId);
 
     int agreeReturn(Long equipmentId);
+
+    List<Equipment> selectEquipmentByIds(List<Long> ids);
 }

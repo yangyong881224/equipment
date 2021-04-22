@@ -101,4 +101,9 @@ public class EquipmentServiceImpl implements IEquipmentService
     public int agreeReturn(Long equipmentId) {
         return equipmentMapper.agreeReturn(equipmentId);
     }
+
+    @Override
+    public List<Equipment> selectEquipmentByIds(List<Long> ids) {
+        return equipmentMapper.selectEquipmentByIds(ids);
+    }
 }

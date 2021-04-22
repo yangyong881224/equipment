@@ -23,12 +23,14 @@
 		</div>
 		<div class="n_centent">
 			　　<div class="subCont">
-						<ul class="news_list2">
-    						<li> <span class="title"><a href="xiangxi.html" style="color:#444;font-weight:bold;">新闻名称</a></span><span class="hits">点击次数：2000</span><br />
-                                <span class="time">2016-07-23</span> <span class="class">分类：<a href="#">分类名称</a></span> </li>
-
+						<ul class="news_list2" id="content">
 						</ul>
 					</div>
+		</div>
+		<div class="n_centent">
+			<div class="postdiv">
+				<button onclick="borrow()" style="width:140px">申请借用</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -36,18 +38,59 @@
 
 <script type="application/javascript">
 
-    $.ajax({
-        type: "get",
-        url: "/user/purchase/list",
-        data: {
+	init();
+	function init(){
+        $.ajax({
+            type: "get",
+            url: "/user/purchase/list",
+            data: {
 
-        },
-        success: function(r) {
-            r.forEach(function(purchase, index){
+            },
+            success: function(data) {
+                html = "";
+                $("#content").html("");
+                data.forEach(function(userPurchase, index){
+                    html += '<input name="purchaseId" type="hidden" value="'+userPurchase.id+'" readonly>';
+                    html += '<li style="height: 150px;"> <span class="title"><a href="xiangxi.html">' +
+                        '<img src="'+ userPurchase.path +'" width="216" height="146"/>'+
 
-			})
-        }
-    });
+                        '</a></span>' +
+                        '<span class="hits"><a href="javascript:remove('+ userPurchase.id +')">移除</a></span><br />' +
+                        '<span class="time">'+ userPurchase.equipmentName +'</span> ';
+                    if(userPurchase.flag == 1){
+                        html += '<span class="class" style="color:red">已报销</span>';
+                    }
+                    if(userPurchase.quantity - userPurchase.borrowQuantity <= 0){
+                        html += '<span class="class" style="color:red">无库存</span>';
+                    }
+                    html +=' </li>';
+
+                })
+                $("#content").html(html);
+
+            }
+        });
+	}
+
+
+    function remove(id){
+        $.ajax({
+            type: "delete",
+            url: "/user/purchase/remove",
+            data: {
+				id:id
+            },
+            success: function(data) {
+                init();
+            }
+        });
+	}
+
+	function borrow(){
+	    $( "input[name='purchaseId']").each(function(){
+            var ($(this).val())
+        })
+	}
 
 </script>
 </body>

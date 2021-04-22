@@ -45,6 +45,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectEquipmentVo"/>
         where id = #{id}
     </select>
+
+    <select id="selectEquipmentByIds" parameterType="List" resultMap="EquipmentResult">
+        <include refid="selectEquipmentVo"/>
+        where id in (
+        <foreach collection="list" item="id" separator=",">
+          #{id}
+        </foreach>
+        )
+    </select>
         
     <insert id="insertEquipment" parameterType="Equipment" useGeneratedKeys="true" keyProperty="id">
         insert into equipment
