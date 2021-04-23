@@ -4,6 +4,7 @@ import com.equipment.system.domain.Purchase;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @PurchaseMapper:
@@ -34,4 +35,9 @@ public interface PurchaseMapper {
     public Integer create(Purchase purchase);
 
 
+    Purchase findByUserIdEquipmentId(Purchase purchase);
+
+    public Integer update(Purchase purchase);
+
+    List<Purchase> findByIds(List<Long> ids);
 }

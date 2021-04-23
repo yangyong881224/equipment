@@ -6,7 +6,9 @@ import com.equipment.system.service.IPurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @PurchaseServiceImpl:
@@ -31,8 +33,16 @@ public class PurchaseServiceImpl implements IPurchaseService {
 
     @Override
     public Boolean create(Purchase purchase) {
-        return purchaseMapper.create(purchase) > 0;
+        Purchase oldPurchase = purchaseMapper.findByUserIdEquipmentId(purchase);
+        if(oldPurchase == null){
+            return purchaseMapper.create(purchase) > 0;
+        }else{
+            return purchaseMapper.update(purchase) > 0;
+        }
     }
 
-
+    @Override
+    public List<Purchase> findByIds(List<Long> ids) {
+        return purchaseMapper.findByIds(ids);
+    }
 }

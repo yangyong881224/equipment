@@ -34,4 +34,5 @@ public interface IPurchaseService {
     public Boolean create(Purchase purchase);
 
 
+    List<Purchase> findByIds(List<Long> ids);
 }

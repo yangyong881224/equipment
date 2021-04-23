@@ -98,17 +98,23 @@
 
 	function purchase(){
         var equipmentId = $("#equipmentId").val();
+        var createdAt = $("#createdAt").val();
+        var returnAt = $("#returnAt").val();
         $.ajax({
             type: "post",
             url: "/user/purchase/create",
             data: {
                 equipmentId:equipmentId,
+                startTime:createdAt,
+                endTime:returnAt,
             },
             success: function(data) {
-                if(data == true){
-                    alert("加入清单成功");
-                }else{
+                if(data.code == "0"){
+                    alert(data.msg);
+                }else if(data.code == "-1"){
                     login();
+                } else{
+                    alert(data.msg);
                 }
             }
         });

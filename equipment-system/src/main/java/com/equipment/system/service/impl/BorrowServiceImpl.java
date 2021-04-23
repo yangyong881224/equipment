@@ -189,5 +189,8 @@ public class BorrowServiceImpl implements IBorrowService
         return result;
     }
 
-
+    @Override
+    public List<Borrow> selectUnBack(Borrow borrow) {
+        return borrowMapper.selectUnBack(borrow);
+    }
 }

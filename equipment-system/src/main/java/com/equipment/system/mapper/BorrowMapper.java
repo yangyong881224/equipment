@@ -80,4 +80,6 @@ public interface BorrowMapper
     Long selectOverTimeCountByEquipmentId(Long id);
 
     Long selectUrgeCountByEquipmentId(Long id);
+
+    List<Borrow> selectUnBack(Borrow borrow);
 }

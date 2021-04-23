@@ -9,6 +9,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="userId"    column="user_id"    />
         <result property="createdAt"    column="created_at"    />
         <result property="equipmentId"    column="equipment_id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
     </resultMap>
 
     <sql id="cols_all">
@@ -16,11 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <sql id="cols">
-        `user_id`, `equipment_id`, `created_at`
-    </sql>
-
-    <sql id="cols_user">
-        <include refid="cols_all"/> , equipment_path, equipment_name, flag
+        `user_id`, `equipment_id`, `created_at`,`start_time`,`end_time`
     </sql>
 
     <!--查询-->
@@ -30,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!--创建-->
     <insert id="create" parameterType="com.equipment.system.domain.Purchase">
-        insert into `purchase_equipment` (user_id, equipment_id, created_at) values(#{userId},#{equipmentId},now())
+        insert into `purchase_equipment` (user_id, equipment_id, created_at, start_time, end_time) values(#{userId},#{equipmentId},now(),#{startTime},#{endTime})
     </insert>
 
     <!--删除-->
@@ -38,7 +36,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         delete from `purchase_equipment` where id = #{id}
     </delete>
     
+    <select id="findByUserIdEquipmentId" parameterType="Purchase" resultMap="PurchaseResult">
+        select <include refid="cols_all"/>
+        from `purchase_equipment` where user_id=#{userId} and equipment_id=#{equipmentId}
+    </select>
 
+    <update id="update" parameterType="Purchase">
+        update `purchase_equipment` set `created_at`=now(),start_time=#{startTime},end_time=#{endTime} where user_id=#{userId} and equipment_id=#{equipmentId}
+    </update>
 
+    <select id="findByIds" parameterType="List" resultMap="PurchaseResult">
+        select <include refid="cols_all"/>
+        from `purchase_equipment` where id in
+        <foreach collection="list" item="id" separator="," index="index" open="(" close=")">
+          #{id}
+        </foreach>
+    </select>
 
 </mapper>

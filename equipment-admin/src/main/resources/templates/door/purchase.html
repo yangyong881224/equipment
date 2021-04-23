@@ -63,6 +63,8 @@
                     if(userPurchase.quantity - userPurchase.borrowQuantity <= 0){
                         html += '<span class="class" style="color:red">无库存</span>';
                     }
+                    html += '<br><br><br>'
+					html += '<span class="class"">'+userPurchase.startTime+'</span> -<span class="class"">'+userPurchase.endTime+'</span>';
                     html +=' </li>';
 
                 })
@@ -87,9 +89,20 @@
 	}
 
 	function borrow(){
+	    var ids = new Array();
 	    $( "input[name='purchaseId']").each(function(){
-            var ($(this).val())
+            ids.push($(this).val())
         })
+        $.ajax({
+            type: "post",
+            url: "/user/purchase/borrow",
+            data: {
+                ids:ids,
+            },
+            success: function(data) {
+                init();
+            }
+        });
 	}
 
 </script>

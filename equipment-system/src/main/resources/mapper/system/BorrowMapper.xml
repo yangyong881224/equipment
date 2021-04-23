@@ -201,4 +201,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT COUNT(id) FROM `borrow` WHERE urge_return = 1 AND equipment_id = #{equipmentId}
     </select>
 
+
+    <select id="selectUnBack" parameterType="Borrow" resultMap="BorrowResult">
+        <include refid="selectBorrowVo"/> where user_id=#{userId} and equipment_id=#{equipmentId} and flag!=3
+    </select>
 </mapper>
