@@ -1,7 +1,8 @@
 package com.equipment.system.service;
 
-import java.util.List;
 import com.equipment.system.domain.Equipment;
+
+import java.util.List;
 
 /**
  * 设备管理Service接口
@@ -59,7 +60,7 @@ public interface IEquipmentService
      */
     public int deleteEquipmentById(Long id);
 
-    int agreeBorrow(Long equipmentId);
+    int agreeBorrow(Equipment equipment);
 
     int agreeReturn(Long equipmentId);
 

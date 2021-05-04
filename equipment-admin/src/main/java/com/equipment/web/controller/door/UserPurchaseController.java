@@ -9,14 +9,16 @@ import com.equipment.system.service.IEquipmentService;
 import com.equipment.system.service.IPurchaseService;
 import com.equipment.web.controller.vo.UserPurchaseVO;
 import com.google.common.collect.Lists;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -56,20 +58,10 @@ public class UserPurchaseController {
             result.put("code","-1");
             result.put("msg","用户未登录");
         }else{
-            Borrow borrow = new Borrow();
-            borrow.setUserId(ShiroUtils.getUserId());
-            borrow.setEquipmentId(purchase.getEquipmentId());
-            List<Borrow> borrowList = borrowService.selectUnBack(borrow);
-            if(!borrowList.isEmpty()){
-                result.put("code","-2");
-                result.put("msg","该设备尚未归还或者正在审批");
-            }else {
-                purchase.setUserId(ShiroUtils.getUserId());
-                purchaseService.create(purchase);
-                result.put("code","0");
-                result.put("msg","已加入清单");
-            }
-
+            purchase.setUserId(ShiroUtils.getUserId());
+            purchaseService.create(purchase);
+            result.put("code","0");
+            result.put("msg","已加入清单");
         }
         return result;
 
@@ -113,8 +105,8 @@ public class UserPurchaseController {
 
     @PostMapping("/borrow")
     @ResponseBody
-    public Boolean creates(@RequestParam(value = "ids[]") List<Long> ids){
-        List<Purchase> purchaseList = purchaseService.findByIds(ids);
+    public Boolean creates(@RequestBody List<UserPurchaseVO> userPurchaseVOList){
+        List<Purchase> purchaseList = purchaseService.findByIds(userPurchaseVOList.stream().map(UserPurchaseVO::getId).collect(Collectors.toList()));
         for(Purchase purchase : purchaseList){
             Equipment equipment = equipmentService.selectEquipmentById(purchase.getEquipmentId());
             Borrow borrow = new Borrow();
@@ -122,6 +114,7 @@ public class UserPurchaseController {
             borrow.setCreatedAt(purchase.getStartTime());
             borrow.setReturnAt(purchase.getEndTime());
             borrow.setEquipmentName(equipment.getName());
+            borrow.setBorrowNum(userPurchaseVOList.stream().filter(userPurchaseVO -> userPurchaseVO.getEquipmentId().equals(borrow.getEquipmentId())).findFirst().orElse(new UserPurchaseVO()).getBorrowNum());
 
             borrow.setFlag(0);
             borrow.setUserId(ShiroUtils.getUserId());

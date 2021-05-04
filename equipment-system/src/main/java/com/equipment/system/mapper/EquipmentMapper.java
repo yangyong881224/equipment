@@ -1,7 +1,8 @@
 package com.equipment.system.mapper;
 
-import java.util.List;
 import com.equipment.system.domain.Equipment;
+
+import java.util.List;
 
 /**
  * 设备管理Mapper接口
@@ -59,7 +60,7 @@ public interface EquipmentMapper
      */
     public int deleteEquipmentByIds(String[] ids);
 
-    int agreeBorrow(Long equipmentId);
+    int agreeBorrow(Equipment equipment);
 
     int agreeReturn(Long equipmentId);
 

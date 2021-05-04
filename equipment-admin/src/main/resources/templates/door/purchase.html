@@ -4,6 +4,7 @@
 	<th:block th:include="/door/public :: header('消息详情')" />
 
 </head>
+
 <body>
 <div th:block th:insert="~{/door/public :: public_static}" ></div>
 
@@ -51,6 +52,7 @@
                 $("#content").html("");
                 data.forEach(function(userPurchase, index){
                     html += '<input name="purchaseId" type="hidden" value="'+userPurchase.id+'" readonly>';
+                    html += '<input name="equipmentId" type="hidden" value="'+userPurchase.equipmentId+'" readonly>';
                     html += '<li style="height: 150px;"> <span class="title"><a href="xiangxi.html">' +
                         '<img src="'+ userPurchase.path +'" width="216" height="146"/>'+
 
@@ -65,6 +67,9 @@
                     }
                     html += '<br><br><br>'
 					html += '<span class="class"">'+userPurchase.startTime+'</span> -<span class="class"">'+userPurchase.endTime+'</span>';
+					html += '<span class="hits"><button onclick="pre(this)" style="background: green">-</button>' +
+						'<input name="borrowNum" type="number" value="1">' +
+						'<button onclick="add(this,'+ userPurchase.quantity+','+ userPurchase.borrowQuantity + ' )" style="background: green">+</button></span>';
                     html +=' </li>';
 
                 })
@@ -93,16 +98,56 @@
 	    $( "input[name='purchaseId']").each(function(){
             ids.push($(this).val())
         })
+
+		var borrowNums = new Array();
+        $( "input[name='borrowNum']").each(function(){
+            borrowNums.push($(this).val())
+        })
+
+		var equipmentIds = new Array();
+        $( "input[name='equipmentId']").each(function(){
+            equipmentIds.push($(this).val())
+        })
+
+        var userPurchaseList = new Array();
+		for(var i = 0 ; i < equipmentIds.length; i ++){
+		    var userPurchase = {
+		        id:Number(ids[i]),
+		        equipmentId:Number(equipmentIds[i]),
+				borrowNum:Number(borrowNums[i])
+			};
+            userPurchaseList.push(userPurchase);
+		}
+        var jsonData = JSON.stringify(userPurchaseList);
         $.ajax({
             type: "post",
             url: "/user/purchase/borrow",
-            data: {
-                ids:ids,
-            },
+			dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            data: jsonData,
             success: function(data) {
                 init();
             }
         });
+	}
+
+	function add(val,quantity, borrowQuantity){
+        var num = $(val).prev();
+        if(Number(num.val()) >= Number(quantity)-Number(borrowQuantity)){
+            num.val(Number(quantity)-Number(borrowQuantity))
+            return;
+		}
+        num.val(Number(num.val()) + 1);
+
+    }
+
+    function pre(val){
+        var num = $(val).next();
+        if(Number(num.val()) <= 1){
+            num.val(1);
+            return ;
+		}
+        num.val(Number(num.val()) - 1);
 	}
 
 </script>

@@ -117,8 +117,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <update id="agreeBorrow" parameterType="Long">
-        update equipment set borrow_quantity=borrow_quantity+1 , borrow_num=borrow_num+1 where id=#{equipmentId}
+    <update id="agreeBorrow" parameterType="Equipment">
+        update equipment set borrow_quantity=borrow_quantity + #{borrowNum} , borrow_num=borrow_num+#{borrowNum} where id=#{id}
     </update>
 
     <update id="agreeReturn" parameterType="Long">

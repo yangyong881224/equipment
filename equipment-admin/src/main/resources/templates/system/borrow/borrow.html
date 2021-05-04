@@ -102,6 +102,10 @@
                     }
                 },
                 {
+                    field: 'borrowNum',
+                    title: '借用数量',
+                },
+                {
                     field: 'examineAt',
                     title: '审批时间'
                 },
@@ -166,13 +170,13 @@
                     formatter: function(value, row, index) {
                         var actions = [];//todo 这里需要加判断条件
                         if(row.flag == 0 && row.examineFlag == 0){
-                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否确认借用\', \''+ row.id +'\',1,\''+ row.equipmentId +'\')"><i class="fa fa-edit"></i>同意借用</a> ');
-                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否确认拒绝\',\''+ row.id +'\',2,\''+ row.equipmentId +'\')"><i class="fa fa-remove"></i>拒绝借用</a>');
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否确认借用\', \''+ row.id +'\',1,\''+ row.equipmentId +'\',\''+ row.borrowNum +'\')"><i class="fa fa-edit"></i>同意借用</a> ');
+                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否确认拒绝\',\''+ row.id +'\',2,\''+ row.equipmentId +'\',\''+ row.borrowNum +'\')"><i class="fa fa-remove"></i>拒绝借用</a>');
                         }else if(row.flag == 1 && row.urgeReturn == 0){
-                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否确认催还\', \''+ row.id +'\',5,\''+ row.equipmentId +'\')"><i class="fa fa-remove"></i>催还</a>');
+                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否确认催还\', \''+ row.id +'\',5,\''+ row.equipmentId +'\',\''+ row.borrowNum +'\')"><i class="fa fa-remove"></i>催还</a>');
                         }else if(row.flag == 2){
-                            actions.push('<a class="btn btn-success btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否同意归还\', \''+ row.id +'\',3,\''+ row.equipmentId +'\')"><i class="fa fa-edit"></i>同意归还</a>');
-                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否驳回归还\', \''+ row.id +'\',4,\''+ row.equipmentId +'\')"><i class="fa fa-remove"></i>驳回归还</a>');
+                            actions.push('<a class="btn btn-success btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否同意归还\', \''+ row.id +'\',3,\''+ row.equipmentId +'\',\''+ row.borrowNum +'\')"><i class="fa fa-edit"></i>同意归还</a>');
+                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="agreeBorrow(\'是否驳回归还\', \''+ row.id +'\',4,\''+ row.equipmentId +'\',\''+ row.borrowNum +'\')"><i class="fa fa-remove"></i>驳回归还</a>');
                         }else if(row.flag == 1 && row.urgeReturn == 1){
                             actions.push('-');
                         }else {
@@ -186,7 +190,7 @@
         });
     </script>
 <script type="application/javascript">
-    function agreeBorrow(tips,id, type,equipmentId){
+    function agreeBorrow(tips,id, type,equipmentId,borrowNum){
         var urgeReturn = null;
         var examineFlag = null;
         if(type == 5){
@@ -202,7 +206,8 @@
                     id:id,
                     examineFlag:examineFlag,
                     urgeReturn:urgeReturn,
-                    equipmentId:equipmentId
+                    equipmentId:equipmentId,
+                    borrowNum:borrowNum
                 },
                 success: function(data) {
                     $.table.refresh();

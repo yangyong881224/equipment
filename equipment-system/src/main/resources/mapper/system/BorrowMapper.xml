@@ -18,6 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="flag"    column="flag"    />
         <result property="examineFlag"    column="examine_flag"    />
         <result property="urgeReturn"    column="urge_return"    />
+        <result property="borrowNum"    column="borrow_num"    />
         <result property="realReturnAt"    column="real_return_at"    />
     </resultMap>
 
@@ -34,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBorrowVo">
-        select id, user_id, user_name, equipment_id, equipment_name, created_at, return_at, examine_at, sys_user_id, sys_user_name, flag, examine_flag, urge_return, real_return_at from borrow
+        select id, user_id, user_name, equipment_id, equipment_name, created_at, return_at, examine_at, sys_user_id, sys_user_name, flag, examine_flag, urge_return, real_return_at, borrow_num from borrow
     </sql>
 
     <select id="selectBorrowList" parameterType="Borrow" resultMap="BorrowResult">
@@ -53,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="examineFlag != null "> and examine_flag = #{examineFlag}</if>
             <if test="urgeReturn != null "> and urge_return = #{urgeReturn}</if>
             <if test="realReturnAt != null "> and real_return_at = #{realReturnAt}</if>
+            <if test="borrowNum != null "> and borrow_num = #{borrowNum}</if>
         </where>
     </select>
     
@@ -77,6 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="examineFlag != null">examine_flag,</if>
             <if test="urgeReturn != null">urge_return,</if>
             <if test="realReturnAt != null">real_return_at,</if>
+            <if test="borrowNum != null">borrow_num,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">#{userId},</if>
@@ -91,7 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="flag != null">#{flag},</if>
             <if test="examineFlag != null">#{examineFlag},</if>
             <if test="urgeReturn != null">#{urgeReturn},</if>
-            <if test="realReturnAt != null">#{realReturnAt},</if>
+            <if test="borrowNum != null">#{borrowNum},</if>
          </trim>
     </insert>
 

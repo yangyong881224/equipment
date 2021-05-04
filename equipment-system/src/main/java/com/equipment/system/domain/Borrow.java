@@ -1,18 +1,11 @@
 package com.equipment.system.domain;
 
-import java.util.Date;
-
-import com.equipment.common.utils.DateUtils;
-import com.equipment.system.enums.BorrowExamineFlagEnum;
-import com.equipment.system.enums.BorrowFlagEnum;
-import com.equipment.system.enums.BorrowUserStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.equipment.common.annotation.Excel;
 import com.equipment.common.core.domain.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 /**
  * 借用管理对象 borrow
@@ -49,6 +42,8 @@ public class Borrow extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
 
+    private Integer borrowNum;
+
     /** 归还日期 */
     @Excel(name = "归还日期", width = 30, dateFormat = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -81,6 +76,14 @@ public class Borrow extends BaseEntity
     private Date realReturnAt;
     //是否超时
     private boolean overtime = false;
+
+    public Integer getBorrowNum() {
+        return borrowNum;
+    }
+
+    public void setBorrowNum(Integer borrowNum) {
+        this.borrowNum = borrowNum;
+    }
 
 
 

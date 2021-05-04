@@ -1,27 +1,26 @@
 package com.equipment.web.controller.system;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.equipment.common.annotation.Log;
+import com.equipment.common.core.controller.BaseController;
+import com.equipment.common.core.domain.AjaxResult;
+import com.equipment.common.core.page.TableDataInfo;
+import com.equipment.common.enums.BusinessType;
 import com.equipment.common.utils.ShiroUtils;
+import com.equipment.common.utils.poi.ExcelUtil;
+import com.equipment.system.domain.Borrow;
+import com.equipment.system.domain.Equipment;
 import com.equipment.system.enums.BorrowExamineFlagEnum;
 import com.equipment.system.enums.BorrowFlagEnum;
+import com.equipment.system.service.IBorrowService;
 import com.equipment.system.service.IEquipmentService;
-import com.google.common.collect.Lists;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import com.equipment.common.annotation.Log;
-import com.equipment.common.enums.BusinessType;
-import com.equipment.system.domain.Borrow;
-import com.equipment.system.service.IBorrowService;
-import com.equipment.common.core.controller.BaseController;
-import com.equipment.common.core.domain.AjaxResult;
-import com.equipment.common.utils.poi.ExcelUtil;
-import com.equipment.common.core.page.TableDataInfo;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 借用管理Controller
@@ -122,13 +121,25 @@ public class BorrowController extends BaseController
             borrow.setExamineAt(new Date());
             borrow.setFlag(BorrowFlagEnum.BORROWING.getCode());
             //借用数量-1，被借次数+1
-            equipmentService.agreeBorrow(borrow.getEquipmentId());
+            Equipment equipment = new Equipment();
+            equipment.setId(borrow.getEquipmentId());
+
+            Equipment oldEquipment = equipmentService.selectEquipmentById(borrow.getEquipmentId());
+            if(oldEquipment.getQuantity()-oldEquipment.getBorrowQuantity() < borrow.getBorrowNum()){
+                throw new RuntimeException("库存不足");
+            }
+            equipment.setBorrowNum(oldEquipment.getBorrowNum() + borrow.getBorrowNum());
+            equipment.setBorrowQuantity(oldEquipment.getBorrowQuantity() + borrow.getBorrowNum());
+            equipmentService.agreeBorrow(equipment);
         }else if(BorrowExamineFlagEnum.REFUSE_BORROW.getCode().equals(borrow.getExamineFlag())){
             borrow.setExamineAt(new Date());
         }else if(BorrowExamineFlagEnum.AGREE_RETURN_BACK.getCode().equals(borrow.getExamineFlag()) ){
             borrow.setFlag(BorrowFlagEnum.RETURN_BACK.getCode());
             borrow.setRealReturnAt(new Date());
-            equipmentService.agreeReturn(borrow.getEquipmentId());
+            Equipment equipment = new Equipment();
+            Equipment oldEquipment = equipmentService.selectEquipmentById(borrow.getEquipmentId());
+            equipment.setBorrowQuantity(oldEquipment.getBorrowQuantity() -  borrow.getBorrowNum());
+            equipmentService.updateEquipment(equipment);
         } else if(BorrowExamineFlagEnum.REFUSE_RETURN_BACK.getCode().equals(borrow.getExamineFlag())){
             borrow.setFlag(BorrowFlagEnum.BORROWING.getCode());
         }

@@ -57,6 +57,9 @@ public class UserBorrowController extends BaseController {
         borrow.setUserName(ShiroUtils.getSysUser().getUserName());
         borrow.setExamineFlag(0);
         borrow.setUrgeReturn(0);
+        if(borrow.getBorrowNum()==null || borrow.getBorrowNum().equals(0)){
+            borrow.setBorrowNum(1);
+        }
         return borrowService.insertBorrow(borrow)==1;
     }
 

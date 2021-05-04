@@ -16,6 +16,7 @@ public class UserPurchaseVO implements Serializable {
     private Long id;
     private Long userId;
     private Long equipmentId;
+    private Integer borrowNum;
     private String equipmentName;
     private String path;
     private Integer flag;
@@ -29,6 +30,14 @@ public class UserPurchaseVO implements Serializable {
 
     public Date getStartTime() {
         return startTime;
+    }
+
+    public Integer getBorrowNum() {
+        return borrowNum;
+    }
+
+    public void setBorrowNum(Integer borrowNum) {
+        this.borrowNum = borrowNum;
     }
 
     public void setStartTime(Date startTime) {

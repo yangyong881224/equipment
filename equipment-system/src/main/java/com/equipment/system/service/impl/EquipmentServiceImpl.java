@@ -1,12 +1,13 @@
 package com.equipment.system.service.impl;
 
-import java.util.List;
+import com.equipment.common.core.text.Convert;
+import com.equipment.system.domain.Equipment;
+import com.equipment.system.mapper.EquipmentMapper;
+import com.equipment.system.service.IEquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.equipment.system.mapper.EquipmentMapper;
-import com.equipment.system.domain.Equipment;
-import com.equipment.system.service.IEquipmentService;
-import com.equipment.common.core.text.Convert;
+
+import java.util.List;
 
 /**
  * 设备管理Service业务层处理
@@ -93,8 +94,8 @@ public class EquipmentServiceImpl implements IEquipmentService
     }
 
     @Override
-    public int agreeBorrow(Long equipmentId) {
-        return equipmentMapper.agreeBorrow(equipmentId);
+    public int agreeBorrow(Equipment equipment) {
+        return equipmentMapper.agreeBorrow(equipment);
     }
 
     @Override
