@@ -136,10 +136,9 @@ public class BorrowController extends BaseController
         }else if(BorrowExamineFlagEnum.AGREE_RETURN_BACK.getCode().equals(borrow.getExamineFlag()) ){
             borrow.setFlag(BorrowFlagEnum.RETURN_BACK.getCode());
             borrow.setRealReturnAt(new Date());
-            Equipment equipment = new Equipment();
             Equipment oldEquipment = equipmentService.selectEquipmentById(borrow.getEquipmentId());
-            equipment.setBorrowQuantity(oldEquipment.getBorrowQuantity() -  borrow.getBorrowNum());
-            equipmentService.updateEquipment(equipment);
+            oldEquipment.setBorrowQuantity(oldEquipment.getBorrowQuantity() -  borrow.getBorrowNum());
+            equipmentService.updateEquipment(oldEquipment);
         } else if(BorrowExamineFlagEnum.REFUSE_RETURN_BACK.getCode().equals(borrow.getExamineFlag())){
             borrow.setFlag(BorrowFlagEnum.BORROWING.getCode());
         }

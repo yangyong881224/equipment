@@ -73,9 +73,16 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
+                sortName: "id",
+                sortOrder: "desc",
                 modalName: "借用管理",
                 columns: [{
                     checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: 'ID',
+                    visible: false
                 },
                 {
                     field: 'userName',
@@ -93,7 +100,6 @@
                     field: 'returnAt',
                     title: '归还日期',
                     formatter: function(value, row, index) {
-                        console.log(row)
                         if(row.overtime && row.flag!=3){
                             return '<span style="color:red")>'+value+'</span>'
                         }else{
@@ -210,7 +216,14 @@
                     borrowNum:borrowNum
                 },
                 success: function(data) {
-                    $.table.refresh();
+                    if(data.code == 500){
+                        alert(data.msg);
+                    }else{
+                        $.table.refresh();
+                    }
+                },
+                error: function(data){
+                    console.log(data);
                 }
             });
         })

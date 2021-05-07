@@ -101,6 +101,10 @@
 
 		var borrowNums = new Array();
         $( "input[name='borrowNum']").each(function(){
+        	if($(this).val() == 0){
+        		alert("借用数量0");
+        		return ;
+			}
             borrowNums.push($(this).val())
         })
 
